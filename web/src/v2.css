@@ -1,0 +1,765 @@
+/* v2.css — 界面优化方案 Layout v2（DownloadsTMS-Layout-v2	ms-ui-html，2026-10-06）接入 TMS。
+   由 assets/theme.css + assets/layout.css 生成，在 app.css 之后加载；body 上的 v2-layout / v2-admin / v2-employee / v2-page-<slug>
+   由 web/src/v2.jsx 按路由写入。品牌色仍以 config.json brand.colors（applyBrand 写在 <html> 上）优先。 */
+
+/* ---------- theme.css ---------- */
+/* Unified TMS theme. Load after the original component styles. */
+:root{--font:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei','Noto Sans SC',sans-serif;--brand:#6355d9;--brand-hover:#5042c0;--brand-active:#4435a7;--brand-050:#f0edff;--brand-100:#ded8fc;--navy:#20243c;--gold:#9f91ff;--accent:#6355d9;--ink:#252940;--ink-2:#586078;--ink-3:#717991;--line:#e4e7ef;--line-2:#f2f3f8;--surface:#f5f6fb;--card:#fff;--success:#15856c;--success-bg:#e7f6ef;--warning:#b77816;--warning-bg:#fff6e5;--danger:#ce4c60;--danger-bg:#fff0f2;--radius:10px;--radius-sm:8px;--radius-lg:16px;--shadow-1:0 3px 14px rgba(35,39,66,.035);--shadow-2:0 12px 30px rgba(35,39,66,.09);color-scheme:light}
+html{scroll-behavior:smooth}body{font-size:14px;line-height:1.65}button,input,select,textarea{font-family:var(--font)}button,a,input,[tabindex]{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid #a89bef;outline-offset:3px}input:focus-visible{outline:none}img{max-width:100%}svg{flex-shrink:0}h1,h2,h3{letter-spacing:-.025em}h1,.emp-title,.tset-title,.rec-title{font-size:28px;font-weight:750;line-height:1.3}.tset-lead,.emp-lead,.rec-sub{margin-top:8px;max-width:80ch;color:var(--ink-2)}
+.topbar{height:72px;padding:0 28px;gap:24px;border-bottom:1px solid var(--line);box-shadow:0 2px 12px #24284703;background:#fff;z-index:40}.brand{border-radius:10px;padding:8px 12px;background:var(--navy);gap:12px}.brand .sub{letter-spacing:.2px;color:#e2dff8}.brand img.logo{height:26px}.top-right{gap:14px}.top-right .avatar,.avatar,.me-ava{background:var(--brand-050);color:var(--brand);border:1px solid var(--brand-100);border-radius:12px;font-weight:700}.icon-btn{border-radius:10px}.nav a,.nav .nav-dd-btn{padding:10px 14px;border-radius:9px}.nav a.active,.nav .nav-dd-btn.active{background:var(--brand-050);font-weight:650;color:var(--brand)}.nav-dd-pop{border-radius:12px;padding:8px;box-shadow:var(--shadow-2)}.top-right .adm-exit{border:0;background:transparent;font-family:inherit}.wrap{max-width:1240px;padding:34px 32px 72px}.adm-main .wrap{max-width:1600px;padding:32px 32px 72px}.adm-shell{min-height:calc(100vh - 72px)}.adm-side{width:252px;top:72px;height:calc(100vh - 72px);padding:20px 14px 28px;background:var(--navy);border:0}.adm-nav-label{font-size:10px;letter-spacing:1.1px;padding:14px 14px 7px}.adm-side .adm-nav-label{color:#949ab8}.adm-nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;white-space:normal;font-size:12.5px;line-height:1.5;border-radius:9px;margin-bottom:3px;overflow:visible}.adm-side .adm-nav-item{color:#c9cee3}.adm-side .adm-nav-item:hover{background:#ffffff0c;color:#fff}.adm-side .adm-nav-item.on{background:#6355d9;color:#fff;box-shadow:0 4px 12px #13152425}.theme-nav-icon{width:17px;height:17px;opacity:.8;flex-shrink:0}.adm-badge{margin-left:auto;background:#a398eb;color:#20243c}.adm-burger{border-radius:9px}.theme-overlay{position:fixed;inset:72px 0 0;background:#171d3550;z-index:29;border:0;width:100%;display:none}.theme-overlay.open{display:block}
+.card,.ppl-card,.pcard,.emp-tablecard,.qb-tablecard,.rs-tablecard,.exm-tablecard,.audit-tablecard,.tm-list,.hub-card{border-color:var(--line);border-radius:16px;box-shadow:var(--shadow-1)}.ppl-card{padding:24px}.pcard{padding:22px;gap:16px}.pcard.catalog:hover{border-color:var(--brand-100);box-shadow:var(--shadow-1)}.pcard .cinfo h3{white-space:normal;line-height:1.5;font-size:15px;font-weight:650}.pcard .cinfo .sub{line-height:1.6;gap:6px}.grid,.hub-grid{gap:18px}.sec{margin-top:28px}.sec-h{margin-bottom:16px}.sec h2{font-size:19px}.greet{font-size:26px;letter-spacing:-.6px;margin-bottom:22px}.me-card{padding:26px;gap:18px;border:1px solid var(--brand-100);background:linear-gradient(120deg,#f4f1ff 0%,#fff 65%);box-shadow:var(--shadow-1)}.me-ava{width:56px;height:56px;font-size:22px;background:#6355d9;color:white}.me-name{font-size:21px}.me-facts{gap:14px 30px;padding-top:18px}.me-facts>span{display:flex;flex-direction:column;gap:3px}.me-miles{padding-top:16px}.me-mile{padding:8px}.me-mile-dot{width:8px;height:8px;margin:0 7px}.pill{border-radius:6px;padding:3px 9px;font-size:11.5px}.pill.pri{background:var(--brand-050);color:var(--brand)}.btn,body .semi-button{border-radius:9px;transition:background .15s,box-shadow .15s;min-height:36px}.btn:not(.ghost){box-shadow:0 3px 8px #6355d91a}.btn.ghost{border-color:var(--line);background:white;color:var(--ink-2)}.btn.ghost:hover{color:var(--brand);background:var(--brand-050);border-color:var(--brand-100)}body .semi-button-solid.semi-button-primary{background:var(--brand);color:white}body .semi-button-light.semi-button-primary{background:var(--brand-050);color:var(--brand)}body .semi-input-wrapper,body .semi-select,.pwf,.login-input{border:1px solid var(--line);border-radius:9px;background:#fff;min-height:38px}body .semi-input-wrapper:focus-within,.pwf:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-050)}body .semi-table-thead>tr>th{background:#f8f9fc;color:var(--ink-2);font-size:12px;font-weight:650;padding-top:15px;padding-bottom:15px;border-color:var(--line)}body .semi-table-tbody>tr>td{padding-top:17px;padding-bottom:17px;border-color:var(--line-2)}body .semi-table-tbody>tr:hover>td{background:#faf9ff}body .semi-table-body{overflow-x:auto}.emp-statstrip{gap:12px;background:transparent;border:0;padding:0;margin:22px 0}.emp-stat{background:white;border:1px solid var(--line);border-radius:12px;padding:15px 20px;flex:1;min-width:0;text-align:left;box-shadow:var(--shadow-1)}.emp-stat.on{background:var(--brand-050);border-color:var(--brand-100)}.emp-stat-v{font-size:27px}.emp-head .row{flex-wrap:wrap}.dash-kpi .k{color:var(--ink-2);font-size:12px;max-width:calc(100% - 36px)}.dash-kpi .v{font-size:32px;color:var(--ink);line-height:1.2;margin-top:12px}.dash-kpi:first-child .k,.dash-kpi:first-child .v{color:white}.theme-kpi-icon{position:absolute;right:18px;top:20px;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--brand-050);color:var(--brand)}.dash-kpi:first-child .theme-kpi-icon{background:#ffffff24;color:white}.dash-cardlink{font-size:11px}.dash-bar .n{order:1;max-width:none;flex:1;white-space:normal;line-height:1.45}.dash-bar .c{order:2;width:auto;font-size:12px}.ml-chip,.ppl-chip,.rec-tab,.ppl-tab{min-height:36px}.ml-chip.active,.ppl-chip.on{background:var(--brand);color:white;border-color:var(--brand)}.ppl-ev-card{border-radius:12px;padding:16px 18px}.crumb{margin-bottom:22px;font-size:12px}.course .rail,.course .content{border-radius:16px}.course .content{padding:28px}.course .prose{font-size:15px;line-height:1.9}.login-page{background:radial-gradient(ellipse at 10% 10%,#e3dcfb,transparent 50%),radial-gradient(ellipse at 95% 90%,#e1f1f5,transparent 40%),#f5f6fb}.login-card{max-width:920px;border-radius:24px;box-shadow:0 24px 80px #25294015;border:1px solid #ffffff}.login-hero{padding:52px 38px;background:linear-gradient(145deg,#24243f,#51448e)}.login-hero h2{font-size:27px;line-height:1.4}.login-hero p{color:#d4ceeb;font-size:14px}.login-hero-pill{border-radius:7px}.login-form{padding:48px 42px}.login-form h1{font-size:28px}.login-input input{padding:13px 0}.login-submit{min-height:48px}.cp-wrap{max-width:520px;padding-top:70px}.cp-card{padding:36px;border-radius:20px;box-shadow:var(--shadow-2)}.cp-title{font-size:25px}.cp-rule{padding:12px;background:var(--brand-050);border-radius:10px;color:var(--ink-2)}.tabbar{border-color:var(--line);box-shadow:0 -4px 20px #25294006}.tabbar-item.on{color:var(--brand)}
+/* Snapshot tabs should expose all supplied content until a tab is selected. */
+@media(max-width:1100px){.adm-main .wrap{padding:28px 24px 60px}.topbar{gap:16px;padding:0 20px}.nav a,.nav .nav-dd-btn{padding:9px 10px}.brand .sub{font-size:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.topbar{height:72px;padding:0 14px;gap:10px}.brand{padding:7px 9px}.brand img.logo{height:22px}.brand .sub{display:none}.brand .sub.sub-short{display:none}.top-right{gap:8px}.wrap,.adm-main .wrap{padding:24px 20px 84px}.theme-table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.rec-wrap:not(.theme-tabs-selected) .rec-pane{display:block}.rec-wrap:not(.theme-tabs-selected) .rec-pane--learn{margin-top:26px}}
+@media(max-width:640px){h1,.emp-title,.tset-title,.rec-title{font-size:23px}.wrap,.adm-main .wrap{padding:22px 16px 88px}.grid,.hub-grid{grid-template-columns:minmax(0,1fr);gap:14px}.greet{font-size:23px}.me-card{padding:20px;gap:16px}.me-top{flex-wrap:wrap;align-items:flex-start}.me-ava{width:46px;height:46px}.me-ident{flex:1;min-width:180px}.me-name{font-size:18px}.me-open{width:100%;justify-content:center}.me-facts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.me-mile{display:grid;grid-template-columns:14px 1fr;column-gap:8px}.me-mile-dot{grid-row:1/3;margin:0}.me-mile-title{grid-column:2;white-space:normal}.pcard{padding:18px;gap:12px;flex-wrap:wrap}.pcard .cinfo{min-width:190px}.pcard .cact{margin-left:auto}.ppl-card{padding:18px}.dash-kpi .k{font-size:11px;max-width:100%;padding-right:25px;min-height:34px}.dash-kpi .v{font-size:28px}.theme-kpi-icon{right:10px;top:14px;width:24px;height:24px}.theme-kpi-icon svg{width:14px;height:14px}.emp-head .row{gap:8px}body .semi-button{height:auto;min-height:38px}.course .content{padding:20px}.login-page{padding:68px 16px 28px}.login-card{grid-template-columns:1fr;border-radius:20px}.login-hero{display:flex;padding:24px;gap:8px}.login-hero h2{font-size:22px}.login-hero .brand{margin-bottom:8px}.login-form{padding:28px 24px}.login-form h1{font-size:24px}.cp-wrap{padding:40px 16px}.cp-card{padding:25px;margin-top:0}.theme-nav-icon{width:17px}.ppl-id-main{min-width:0;flex-basis:100%}.theme-table-scroll{border-radius:10px}input,textarea{font-size:16px!important}.top-right .adm-exit{font-size:12px}.topbar .nav{display:none}.brand img.logo{max-width:135px;object-fit:contain}.tabbar-item{min-height:54px}.footer-nav{flex-wrap:wrap}.footer-nav .btn{flex:1;justify-content:center}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+@media(max-width:640px){.ml-filters .ml-chip{display:inline-flex!important}}
+.grw-stats{flex-wrap:wrap;min-width:0}.trev-grid{min-width:0;grid-template-columns:repeat(3,minmax(0,1fr))}.trev-cell,.trev-cell-h,.trev-xlab>span{min-width:0;overflow-wrap:anywhere}.theme-color-row{flex-wrap:wrap;max-width:100%}body .semi-button-content{max-width:100%;white-space:normal}body .semi-button{max-width:100%}
+@media(max-width:640px){body .theme-color-row .semi-button{margin-left:auto}}
+.grw-stats{flex:0 1 auto;max-width:100%}
+
+/* ---------- layout.css ---------- */
+/* Layout v2: retained palette, rebuilt page composition and utility controls. */
+.v2-layout{background:var(--surface)}.v2-layout h1{font-weight:750;letter-spacing:-.045em}.v2-layout .topbar{height:80px;border:0;background:var(--surface);box-shadow:none;padding:0 40px;margin-left:224px;justify-content:flex-end;gap:18px}.v2-layout .topbar>.brand{position:fixed;left:24px;top:28px;max-width:176px;padding:0;background:transparent;flex-direction:column;align-items:flex-start;gap:9px;z-index:45}.v2-layout .topbar>.brand img.logo{height:24px;max-width:176px}.v2-layout .topbar>.brand .sub{font-size:10px;letter-spacing:1.25px;font-weight:600;text-transform:uppercase;color:#aaaec9}.v2-layout .top-right{margin-left:0;display:flex;gap:12px;align-items:center}.v2-layout .adm-main .wrap{max-width:none;margin:0;padding:22px 40px 64px}.v2-layout .adm-nav-item.on{box-shadow:none}.v2-employee-side{position:fixed;top:0;left:0;width:224px;height:100vh;background:var(--navy);padding:122px 16px 30px;z-index:34}.v2-employee-side .nav{display:flex;flex-direction:column;align-items:stretch;margin:0;gap:10px}.v2-employee-side .nav a,.v2-employee-side .nav .nav-dd-btn{color:#c9cee3;font-size:13px;display:flex;align-items:center;gap:11px;padding:13px 12px;white-space:normal}.v2-employee-side .nav .nav-dd-btn{width:100%}.v2-employee-side .nav .nav-dd-btn svg:last-child{margin-left:auto}.v2-employee-side .nav a:hover,.v2-employee-side .nav .nav-dd-btn:hover{color:white;background:#ffffff0a}.v2-employee-side .nav a.active,.v2-employee-side .nav .nav-dd-btn.active{color:white;background:var(--brand)}.v2-employee .wrap{max-width:none;width:calc(100% - 224px);margin:0 0 0 224px;padding:22px 40px 64px}.v2-page-login .topbar,.v2-page-change-password .topbar{margin-left:0}.v2-page-change-password .wrap{width:auto;margin:0 auto;max-width:960px;padding:90px 30px}.v2-layout .crumb{margin-bottom:26px;font-size:11px}.v2-layout .tset-head,.v2-layout .ml-head,.v2-layout .emp-head,.v2-layout .co-head,.v2-layout .rs-head,.v2-layout .qb-head,.v2-layout .exm-head,.v2-layout .audit-head,.v2-layout .rec-head{margin-bottom:30px}.v2-layout .ml-head h1,.v2-layout .tset-title,.v2-layout .emp-title,.v2-layout .rec-title,.v2-layout .co-title,.v2-layout .exm-title,.v2-layout .rs-title,.v2-layout .qb-title,.v2-layout .audit-title{font-size:34px}.v2-layout .ml-head>div:last-child{max-width:760px}.v2-layout .card,.v2-layout .ppl-card,.v2-layout .pcard{border-radius:20px;box-shadow:none}.v2-layout .semi-button,.v2-layout .btn{font-weight:600;box-shadow:none}
+/* Utility area: switch view, language segment, notifications, account menu. */
+.v2-layout .top-right .v2-view-switch{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;color:var(--ink-2);font-size:11px;font-weight:650;padding:0 12px;height:38px;border-radius:11px;text-decoration:none}.v2-layout .top-right .v2-view-switch:hover{color:var(--brand);border-color:var(--brand-100)}.v2-layout .top-right .notif-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:white;border:1px solid var(--line);border-radius:11px;color:var(--ink-2)}.v2-layout .top-right .notif-btn svg{width:17px;height:17px}.v2-layout .top-right .notif-btn:hover{background:var(--brand-050);color:var(--brand)}.v2-layout .v2-account-trigger{display:flex;justify-content:center;align-items:center;gap:8px;width:56px;height:38px;background:var(--brand-050);color:var(--brand);border:1px solid var(--brand-100);border-radius:11px;font-size:13px;cursor:pointer}.v2-utility-icon{width:16px;height:16px;flex-shrink:0}
+/* Employee home: compact identity strip, learning tiles, personal record rail. */
+.v2-page-home .greet{font-size:38px;font-weight:400;letter-spacing:-1.5px;margin:2px 0 26px}.v2-page-home .greet b{font-weight:750}.v2-home-shell{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:28px}.v2-profile-strip{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'identity action' 'facts action';gap:16px 24px;background:white;border:1px solid var(--line);padding:24px 26px;margin:0;border-radius:20px}.v2-profile-strip .me-top{grid-area:identity;gap:14px}.v2-profile-strip .me-name{font-size:20px}.v2-profile-strip .me-ava{width:52px;height:52px;border-radius:15px}.v2-profile-strip .me-facts{grid-area:facts;display:flex;flex-wrap:wrap;border:0;margin-left:66px;padding:0;gap:22px;font-size:12px}.v2-profile-strip .me-facts>span{display:flex;flex-direction:row;gap:5px}.v2-profile-strip>.me-open{grid-area:action;align-self:center;justify-self:end;background:var(--brand-050);color:var(--brand);border:0;min-height:42px}.v2-home-content{min-width:0}.v2-home-content .sec{margin:0}.v2-home-content .sec-h{margin:0 0 18px}.v2-home-content .sec-h h2{font-size:21px}.v2-home-content .grid{gap:18px}.v2-home-content .pcard,.v2-page-my-learning .pcard{position:relative;display:flex;flex-direction:column;align-items:stretch;padding:26px;min-height:248px;gap:18px;overflow:hidden}.v2-home-content .pcard>.ring,.v2-page-my-learning .pcard>.ring{position:absolute;top:25px;right:24px}.v2-home-content .pcard .cinfo,.v2-page-my-learning .pcard .cinfo{flex:1}.v2-home-content .pcard .cinfo h3,.v2-page-my-learning .pcard .cinfo h3{padding-right:68px;font-size:19px;line-height:1.45;letter-spacing:-.025em;margin:0 0 24px;white-space:normal}.v2-home-content .pcard .sub,.v2-page-my-learning .pcard .sub{gap:7px}.v2-home-content .pcard .cact,.v2-page-my-learning .pcard .cact{margin-top:auto;display:flex;justify-content:flex-end;border-top:1px solid var(--line-2);padding-top:16px}.v2-home-content .pcard .cact .btn,.v2-page-my-learning .pcard .cact .btn{min-width:100px;color:var(--brand);background:var(--brand-050);border:0}.v2-home-rail{min-width:0;border-radius:20px;background:#eeecf8;padding:22px;height:max-content}.v2-home-rail .me-stats{display:flex;flex-direction:column;gap:10px;margin:0 0 30px}.v2-home-rail .me-stats .pill{display:flex;align-items:center;justify-content:space-between;background:transparent;color:var(--ink-2);border-bottom:1px solid #dedbec;border-radius:0;padding:8px 0;font-size:12px}.v2-home-rail .me-stats .pill b{font-size:24px;line-height:1.2;color:var(--brand)}.v2-home-rail .me-miles{border:0;padding:0;gap:12px}.v2-home-rail .me-miles-h{font-size:15px;color:var(--ink);font-weight:700;margin-bottom:6px}.v2-home-rail .me-mile{display:grid;grid-template-columns:10px minmax(0,1fr);gap:5px 9px;padding:12px 0;align-items:start}.v2-home-rail .me-mile-dot{grid-row:1/3;width:6px;height:6px;margin:8px 0}.v2-home-rail .me-mile-date{font-size:10px}.v2-home-rail .me-mile-title{grid-column:2;font-size:12px;line-height:1.6;white-space:normal}.v2-home-rail .me-mile:hover{background:#e8e4f5}
+/* Dashboard: a hero metric, five supporting KPIs, and a three-column canvas. */
+.v2-dashboard-hero .tset-title{font-size:38px;color:white}.v2-dashboard-hero .tset-lead{color:#b6bdd5;max-width:58ch;font-size:13px;line-height:1.8}.v2-page-dashboard .dash-kpis{grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:18px;background:#fff;margin:24px 0 30px;overflow:hidden}.v2-page-dashboard .dash-kpis .dash-kpi{border:0;border-right:1px solid var(--line);border-radius:0;background:white;box-shadow:none;min-height:126px;padding:22px 20px;cursor:default}.v2-page-dashboard .dash-kpis .theme-kpi-icon{width:22px;height:22px;right:12px;top:22px;background:transparent;color:var(--brand)}.v2-page-dashboard .dash-cardlink{font-size:10px}
+/* Data workspaces: contextual metrics at left, tools and rows at right. */
+.v2-page-employees .emp-stat.on{background:var(--brand-050);border-color:var(--brand-100);border-left:3px solid var(--brand)}.v2-page-employees .emp-stat-k{display:block;color:var(--ink-2);font-size:11px}.v2-page-employees .emp-stat-v{display:block;color:var(--ink);font-size:27px;margin-top:5px}.v2-layout .semi-table-thead>tr>th{font-size:11px;padding:15px 12px;background:#f9f9fc}.v2-layout .semi-table-tbody>tr>td{font-size:12px;padding:16px 12px}.v2-layout .semi-table-tbody>tr:hover>td{background:#f7f5ff}.v2-layout .emp-av{width:30px;height:30px;background:var(--brand-050);color:var(--brand);border-radius:9px}.v2-layout .ml-toolbar,.v2-layout .qb-chips,.v2-layout .rs-chips{margin-bottom:26px}.v2-layout .hub-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.v2-layout .hub-card{padding:28px;min-height:200px;border-radius:20px;justify-content:flex-end;gap:12px;background:white}.v2-layout .hub-card:first-child{background:var(--brand);color:white}.v2-layout .hub-card:first-child .hub-card-t,.v2-layout .hub-card:first-child .hub-card-d{color:white}.v2-layout .hub-card-t{font-size:22px;font-weight:700}.v2-layout .hub-card-d{line-height:1.7;font-size:12px;max-width:34ch}.v2-layout .hub-card>.ic{position:absolute;top:28px;right:28px;width:24px;height:24px;color:var(--brand)}.v2-layout .hub-card:first-child>.ic{color:white}.v2-layout .ml-empty{background:white;border:1px dashed var(--brand-100);border-radius:24px;padding:70px 28px;text-align:center;font-size:15px;color:var(--ink-2)}
+/* Profile and history: stable identity rail plus switchable content panels. */
+.v2-person-workspace{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;align-items:start}.v2-person-rail{position:sticky;top:100px;min-width:0}.v2-person-rail .ppl-id{padding:26px;display:flex;flex-direction:column;gap:20px;border:0;background:var(--navy);color:white}.v2-person-rail .ppl-id-name h1{font-size:24px;color:white;line-height:1.4}.v2-person-rail .ppl-avatar{width:60px;height:60px;border-radius:18px;background:#ffffff18;color:white}.v2-person-rail .ppl-id-meta{display:flex;flex-direction:column;gap:9px;font-size:12px;color:#c3c8dc}.v2-person-rail .ppl-id-meta b{color:#fff}.v2-person-rail .ppl-chips .pill{white-space:normal;line-height:1.6;padding:12px;font-size:11px;background:white;border:1px solid var(--line);border-radius:12px}.v2-person-rail>.ppl-card{padding:20px}.v2-person-detail{min-width:0}.v2-person-tabs .ppl-tab{flex:none;font-size:12px;padding:14px 16px;border-radius:0;border-bottom:2px solid transparent;min-height:46px}.v2-person-tabs .ppl-tab.on{background:transparent;box-shadow:none;color:var(--brand);border-bottom-color:var(--brand)}.v2-person-detail>.ppl-card{padding:28px}.v2-person-detail .ppl-ev-title{font-size:14px}.v2-record-workspace{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start}.v2-record-rail{position:sticky;top:100px;background:var(--navy);border-radius:20px;padding:24px;color:white}.v2-record-rail .grw-meta{display:flex;flex-direction:column;align-items:stretch;gap:26px;border:0;padding:0;margin:0}.v2-record-rail .grw-ident{display:flex;flex-direction:column;align-items:flex-start;gap:14px;color:#bbc2d7}.v2-record-rail .grw-ident b{color:white}.v2-record-rail .grw-stats{display:flex;flex-direction:column;gap:10px;width:100%;max-width:100%}.v2-record-rail .grw-stats .pill{background:#ffffff0c;color:white;display:flex;justify-content:space-between;padding:12px;font-size:11px}.v2-record-main{min-width:0}.v2-record-tabs{display:flex;background:transparent;border-bottom:1px solid var(--line);gap:10px;margin-bottom:24px}.v2-record-tabs .rec-tab{flex:none;min-width:140px;border-radius:0;border:0;border-bottom:2px solid transparent;padding:15px 8px;background:transparent;font-size:13px;color:var(--ink-2)}.v2-record-tabs .rec-tab.active{border-color:var(--brand);color:var(--brand);font-weight:700}.v2-record-main .rec-pane{display:block}.v2-page-record .rec-view-growth .rec-pane--learn,.v2-page-record .rec-view-learn .rec-pane--growth{display:none!important}.v2-record-main .card{padding:28px}.v2-record-main .grw-head{align-items:flex-start;flex-wrap:wrap;gap:8px}.v2-record-main .grw-head h2{font-size:20px}.v2-record-main .grw-lead{flex-basis:100%;margin:0 0 12px}.v2-layout .rec-table{overflow-x:auto}
+/* Settings become a master/detail workspace using the supplied headings as tabs. */
+.v2-settings-workspace{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:start}.v2-section-tabs{display:flex;flex-direction:column;gap:6px;position:sticky;top:100px;min-width:0}.v2-section-tabs>button{display:block;background:transparent;color:var(--ink-2);border:0;border-radius:10px;text-align:left;padding:15px 16px;cursor:pointer;line-height:1.6;max-width:100%}.v2-section-tabs h2{font-size:13px;font-weight:600;margin:0;line-height:1.6;color:inherit;letter-spacing:0}.v2-section-tabs>button[aria-expanded=true]{color:var(--brand);background:var(--brand-050);border-left:3px solid var(--brand);padding-left:13px}.v2-section-tabs>button:hover{background:var(--brand-050)}.v2-section-panels{min-width:0}.v2-section-panel{padding:30px!important;margin:0!important}.v2-section-panel[hidden]{display:none}
+/* Course, preparation and results are composed around the active content. */
+.v2-layout .course{grid-template-columns:230px minmax(0,1fr);gap:26px;align-items:start}.v2-layout .course>.rail{position:sticky;top:100px;background:#eeecf8;border:0;padding:20px;border-radius:16px;overflow:hidden}.v2-layout .course .rh{padding:0 0 16px;font-size:11px;text-transform:uppercase;letter-spacing:1px}.v2-layout .course .mrow{border-radius:10px;padding:14px 10px;gap:10px;align-items:flex-start}.v2-layout .course .mrow .lbl{white-space:normal;font-size:12px;line-height:1.7}.v2-layout .course .content{padding:38px 42px;border:0;background:white;border-radius:20px}.v2-layout .course .ctitle h2{font-size:26px}.v2-layout .course .prose{font-size:15px;line-height:1.95;color:var(--ink-2)}.v2-layout .course .csub{font-size:11px;margin-bottom:34px}.v2-layout .pg-head{background:var(--navy);border:0;border-radius:24px;padding:34px 38px;gap:36px;color:white}.v2-layout .pg-head h1{font-size:36px;color:white}.v2-layout .pg-desc{color:#bfc5d9;line-height:1.8}.v2-layout .pg-ringlab{color:#bfc5d9}.v2-result-workspace{display:grid;grid-template-columns:280px minmax(0,1fr);gap:30px;align-items:start}.v2-result-rail{position:sticky;top:100px;background:var(--navy);border-radius:24px;padding:28px;color:white}.v2-result-rail .res-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;padding:0;margin:0;background:transparent;border:0}.v2-result-rail .res-head h1{font-size:22px;color:white;line-height:1.5}.v2-result-rail .res-actions{margin:28px 0 0;display:flex;justify-content:center}.v2-result-workspace>.sec{min-width:0;margin:0}.v2-result-workspace .sec-h h2{font-size:20px}.v2-layout .tm-stats{gap:20px}.v2-layout .tm-stat{border-radius:18px;padding:25px;min-height:120px}.v2-layout .tm-stat-v{font-size:38px}.v2-layout .tm-list{background:transparent;border:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.v2-layout .tm-row{background:white;border:1px solid var(--line)!important;border-radius:16px;overflow:hidden}.v2-layout .tm-head{padding:24px;flex-wrap:wrap}.v2-layout .tm-who{min-width:160px}.v2-layout .tm-av{width:42px;height:42px;border-radius:12px}.v2-layout .tm-name{font-size:15px}.v2-layout .tm-detail{padding:0 24px 24px}.v2-layout .tm-crow{flex-wrap:wrap;gap:8px;font-size:11px}.v2-layout .tm-ctitle{flex-basis:100%;white-space:normal}.v2-layout .tm-count{font-size:11px}.v2-layout .tm-more{font-size:11px}
+/* Login is a full-screen split composition; passwords get a two-column form. */
+.v2-page-login .login-page{padding:0;display:block;background:white}.v2-page-login .login-card{max-width:none;min-height:100vh;display:grid;grid-template-columns:1.15fr 1fr;border:0;border-radius:0;box-shadow:none}.v2-page-login .login-hero{padding:70px max(40px,7vw);gap:28px;background:var(--navy)}.v2-page-login .login-hero h2{font-size:48px;font-weight:700;letter-spacing:-1.6px;line-height:1.18;max-width:500px}.v2-page-login .login-hero p{font-size:16px;line-height:1.8;max-width:450px;color:#b5bdd7}.v2-page-login .login-hero .brand{position:absolute;top:50px;left:max(40px,7vw)}.v2-page-login .login-form{width:100%;max-width:500px;justify-self:center;align-self:center;padding:80px 48px}.v2-page-login .login-form h1{font-size:36px}.v2-page-login .login-sub{margin:12px 0 38px}.v2-page-login .login-field{margin-bottom:22px}.v2-page-login .login-lbl{font-size:12px}.v2-page-login .login-input input{padding:15px 0}.v2-page-login .login-submit{min-height:50px}.v2-page-change-password .cp-card{display:grid;grid-template-columns:1fr 1.1fr;gap:18px 38px;padding:40px;border:0;background:white}.v2-page-change-password .cp-title{grid-column:1/-1;font-size:32px;margin-bottom:16px}.v2-page-change-password .cp-rule{grid-column:1;grid-row:2/6;padding:28px;background:var(--navy);border-radius:18px;color:#c5cbdf;font-size:14px;line-height:1.9;margin:0}.v2-page-change-password .cp-field{grid-column:2;margin:0}.v2-page-change-password .cp-card>.btn{grid-column:2}
+@media(min-width:1600px){.v2-home-content .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1250px) and (min-width:901px){.v2-layout .topbar{padding:0 28px}.v2-layout .adm-main .wrap,.v2-employee .wrap{padding:20px 28px 60px}.v2-home-shell{grid-template-columns:minmax(0,1fr) 235px;gap:20px}.v2-home-content .grid{grid-template-columns:1fr}.v2-profile-strip{grid-template-areas:'identity identity' 'facts action';gap:16px}.v2-profile-strip .me-facts{margin-left:0}.v2-profile-strip>.me-open{font-size:11px;max-width:190px;white-space:normal}.v2-person-workspace{grid-template-columns:230px minmax(0,1fr);gap:20px}.v2-person-tabs .ppl-tab{padding:12px 9px;font-size:11px}.v2-settings-workspace{grid-template-columns:170px minmax(0,1fr);gap:20px}.v2-section-panel{padding:24px!important}.v2-layout .tm-list{grid-template-columns:1fr}.v2-layout .course{grid-template-columns:190px minmax(0,1fr);gap:20px}.v2-layout .course .content{padding:28px}.v2-record-workspace{grid-template-columns:200px minmax(0,1fr);gap:20px}.v2-result-workspace{grid-template-columns:230px minmax(0,1fr);gap:20px}}
+@media(max-width:900px){.v2-layout .topbar{height:72px;margin:0;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--line);justify-content:space-between;gap:10px}.v2-layout .topbar>.brand{position:static;max-width:145px;background:var(--navy);padding:8px 10px;flex-direction:row;gap:0;border-radius:9px;flex-shrink:0}.v2-layout .topbar>.brand img.logo{height:22px;max-width:122px}.v2-layout .topbar>.brand .sub{display:none}.v2-layout .top-right{gap:8px;margin-left:auto}.v2-layout .adm-main .wrap,.v2-employee .wrap{width:auto;max-width:none;margin:0;padding:24px 24px 88px}.v2-employee-side{display:none}.v2-layout .top-right .v2-view-switch{display:flex}.v2-view-switch .v2-control-label{display:none}.v2-layout .top-right .v2-view-switch{padding:0;width:38px;justify-content:center}.v2-home-shell{grid-template-columns:minmax(0,1fr) 230px;gap:20px}.v2-home-content .grid{grid-template-columns:1fr}.v2-profile-strip{grid-template-areas:'identity identity' 'facts action';gap:18px}.v2-profile-strip .me-facts{margin:0;flex-wrap:wrap;max-width:100%}.v2-profile-strip .me-facts>span{flex-direction:column;gap:4px}.v2-profile-strip>.me-open{font-size:11px;max-width:190px;white-space:normal}.v2-page-dashboard .dash-kpis .dash-kpi{border:0}.v2-person-workspace{grid-template-columns:230px minmax(0,1fr);gap:20px}.v2-person-tabs .ppl-tab{font-size:11px;padding:12px 10px}.v2-record-workspace{grid-template-columns:190px minmax(0,1fr);gap:20px}.v2-record-rail{position:static}.v2-settings-workspace{display:block}.v2-section-tabs{position:static;display:flex;flex-direction:row;overflow-x:auto;margin-bottom:22px;padding-bottom:6px;gap:6px;align-items:stretch}.v2-section-tabs>button{flex:0 0 auto;white-space:nowrap;border-left:0!important;border-bottom:2px solid transparent;padding:12px 16px!important}.v2-section-tabs>button[aria-expanded=true]{border-bottom-color:var(--brand)}.v2-section-panel{padding:24px!important}.v2-layout .hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-layout .course{grid-template-columns:1fr}.v2-layout .course>.rail{position:static;display:flex;overflow-x:auto;align-items:center;padding:10px;background:#eeecf8;gap:8px}.v2-layout .course .rail .mrow{flex-shrink:0;padding:8px 12px;background:white;max-width:280px;align-items:center;border-radius:10px}.v2-layout .course .rail .mrow .lbl{white-space:nowrap}.v2-layout .course .rh{display:none}.v2-layout .tm-list{grid-template-columns:repeat(2,minmax(0,1fr))}.v2-layout .tm-mlist{margin:0 24px 10px}.v2-layout .login-hero h2{font-size:36px}.v2-page-login .login-hero{padding:50px 32px}.v2-page-login .login-hero .brand{left:32px;top:32px}.v2-page-login .login-form{padding:70px 32px}.v2-result-workspace{grid-template-columns:240px minmax(0,1fr);gap:20px}.v2-result-rail{position:static}}
+@media(max-width:640px){.v2-layout .topbar{padding:0 12px;gap:7px}.v2-layout .top-right{gap:6px}.v2-layout .topbar>.brand{padding:7px 8px;max-width:108px}.v2-layout .topbar>.brand img.logo{height:19px;max-width:92px}.v2-layout .top-right .v2-view-switch,.v2-layout .top-right .notif-btn{height:34px;width:34px;border-radius:9px}.v2-layout .v2-account-trigger{height:34px;width:44px;gap:5px;font-size:12px;border-radius:9px}.v2-layout .v2-account-trigger svg{width:8px}.v2-layout .adm-main .wrap,.v2-employee .wrap{padding:24px 16px 88px}.v2-layout .ml-head h1,.v2-layout .tset-title,.v2-layout .emp-title,.v2-layout .rec-title,.v2-layout .co-title,.v2-layout .exm-title,.v2-layout .rs-title,.v2-layout .qb-title,.v2-layout .audit-title{font-size:28px}.v2-layout .crumb{font-size:10px;line-height:1.8}.v2-page-home .greet{font-size:29px;margin-bottom:22px;line-height:1.4;letter-spacing:-1px}.v2-home-shell{display:flex;flex-direction:column;gap:28px}.v2-profile-strip{display:flex;flex-direction:column;padding:22px;gap:18px;border-radius:18px}.v2-profile-strip .me-top{flex-wrap:nowrap;align-items:flex-start;gap:12px}.v2-profile-strip .me-ava{height:42px;width:42px;font-size:18px;border-radius:12px}.v2-profile-strip .me-ident{min-width:0}.v2-profile-strip .me-name{font-size:17px}.v2-profile-strip .me-sub{font-size:11px;gap:6px}.v2-profile-strip .me-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;font-size:11px;margin:0;padding:16px 0 0;border-top:1px solid var(--line-2)}.v2-profile-strip>.me-open{max-width:none;width:100%;justify-content:center;font-size:11px}.v2-home-content .pcard,.v2-page-my-learning .pcard{padding:24px;min-height:240px}.v2-home-content .pcard .cinfo h3,.v2-page-my-learning .pcard .cinfo h3{font-size:19px;padding-right:60px;margin-bottom:24px}.v2-home-rail{padding:24px;order:3}.v2-home-rail .me-stats{flex-direction:row;gap:12px;margin-bottom:28px}.v2-home-rail .me-stats .pill{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:12px;white-space:normal;font-size:10px}.v2-home-rail .me-stats .pill b{font-size:28px}.v2-home-rail .me-mile{display:grid}.v2-page-dashboard .dash-kpis .dash-kpi{padding:18px 16px;min-height:112px}.v2-page-dashboard .dash-kpis .theme-kpi-icon{right:10px;top:18px;width:17px;height:17px}.v2-layout .hub-grid{grid-template-columns:1fr}.v2-layout .hub-card:first-child{grid-column:auto}.v2-layout .hub-card{min-height:180px;padding:26px}.v2-layout .hub-card-t{font-size:21px}.v2-person-workspace,.v2-record-workspace,.v2-result-workspace{display:flex;flex-direction:column;gap:24px}.v2-person-rail,.v2-person-detail,.v2-record-rail,.v2-record-main,.v2-result-rail,.v2-result-workspace>.sec{width:100%}.v2-person-rail .ppl-id-name h1{font-size:23px;line-height:1.4}.v2-person-rail>.ppl-box9{margin-bottom:0}.v2-person-detail>.ppl-card{padding:22px}.v2-record-rail{padding:22px}.v2-record-rail .grw-ident{display:flex;flex-direction:row;flex-wrap:wrap;gap:12px;font-size:12px}.v2-record-rail .grw-stats{flex-direction:row;flex-wrap:wrap;gap:8px}.v2-record-rail .grw-stats .pill{flex:1;min-width:75px;display:flex;flex-direction:column;gap:8px;font-size:10px}.v2-record-main .card{padding:22px}.v2-record-tabs .rec-tab{flex:1;min-width:0;white-space:normal;font-size:12px;padding:13px 6px}.v2-section-tabs>button{padding:10px 12px!important}.v2-section-tabs h2{font-size:11px}.v2-section-panel{padding:22px!important}.v2-layout .course .content{padding:24px}.v2-layout .course .ctitle{flex-wrap:wrap;gap:14px}.v2-layout .course .ctitle h2{font-size:24px}.v2-layout .course .prose{font-size:14px}.v2-layout .pg-head{padding:28px;flex-direction:column;align-items:flex-start;border-radius:20px;gap:26px}.v2-layout .pg-head h1{font-size:30px}.v2-layout .pg-desc{font-size:12px}.v2-layout .pg-hring{align-self:center}.v2-layout .pg-step{gap:14px}.v2-layout .pg-step .pg-info{padding:20px}.v2-result-rail{padding:28px}.v2-result-rail .res-head{flex-direction:column}.v2-layout .tm-list{grid-template-columns:1fr}.v2-layout .tm-stat{padding:15px;min-height:100px}.v2-layout .tm-stats{gap:8px}.v2-layout .tm-stat-v{font-size:30px}.v2-layout .tm-head{padding:22px}.v2-page-login .login-card{grid-template-columns:1fr}.v2-page-login .login-hero{padding:100px 28px 36px;gap:20px;min-height:310px}.v2-page-login .login-hero .brand{top:34px;left:28px}.v2-page-login .login-hero h2{font-size:34px;max-width:380px;line-height:1.25}.v2-page-login .login-hero p{font-size:13px;line-height:1.8}.v2-page-login .login-form{padding:38px 28px 50px;max-width:500px}.v2-page-login .login-form h1{font-size:29px}.v2-page-login .login-lang{top:28px;right:22px;z-index:10;color:#eee}.v2-page-change-password .wrap{padding:35px 16px;margin:0;width:auto}.v2-page-change-password .cp-card{display:flex;flex-direction:column;padding:26px;gap:20px}.v2-page-change-password .cp-title{font-size:28px;margin:0 0 8px}.v2-page-change-password .cp-rule{order:4;padding:20px;font-size:12px}.v2-page-change-password .cp-card>.btn{order:5}.v2-page-change-password .cp-field{width:100%}}
+
+/* ===== TMS 接入补充（以上为 TMS-Layout-v2 方案 theme.css + layout.css 原文，改动：变量只挂 :root、不改字体、.semi- 选择器加 body 前缀、.v2-workspace→.wrap）===== */
+/* 语言按钮保留原「中 / EN」单按钮写法（test/lang-toggle.test.js 约定），外观按方案的分段控件 */
+.v2-layout .top-right .icon-btn.lang-pick,.v2-page-login .login-lang.lang-pick,.v2-page-reset-password .login-lang.lang-pick{display:flex;align-items:center;padding:4px;gap:2px;background:#eaeaf2;border:1px solid #e2e3ed;border-radius:11px;height:38px}
+.v2-layout .top-right .icon-btn.lang-pick:hover,.v2-page-login .login-lang.lang-pick:hover,.v2-page-reset-password .login-lang.lang-pick:hover{background:#e3e3ee}
+.v2-layout .top-right .icon-btn.lang-pick span:not(.sep),.v2-page-login .login-lang.lang-pick span:not(.sep),.v2-page-reset-password .login-lang.lang-pick span:not(.sep){display:flex;align-items:center;justify-content:center;border-radius:7px;height:28px;min-width:33px;padding:0 9px;font-size:11px;font-weight:650;color:var(--ink-3)}
+.v2-layout .top-right .icon-btn.lang-pick span.on,.v2-page-login .login-lang.lang-pick span.on,.v2-page-reset-password .login-lang.lang-pick span.on{color:var(--brand);background:#fff;box-shadow:0 2px 6px #25294008}
+.v2-layout .lang-pick .sep{display:none!important}
+/* 设置类页面主从布局的分节宿主（SettingsWorkspace）：宿主无样式，只做显隐；里面的卡片按方案面板的 30px 内边距 */
+.v2-section-host[hidden]{display:none}
+.v2-section-host>.ppl-card{padding:30px;margin:0}
+
+/* 后台工作区左右留白：方案是 40px，但 1500px 以下屏幕上考试、题库等定宽列表格会差十几像素放不下，收到 24px */
+@media(max-width:1500px){.v2-layout .adm-main .wrap{padding-left:24px;padding-right:24px}}
+/* 人才盘点 / 档案与职级设置：右侧面板里有宽表格，分节页签列收窄到 180px，面板内边距 24px */
+.v2-page-talent-review .v2-settings-workspace,.v2-page-talent-settings .v2-settings-workspace{grid-template-columns:180px minmax(0,1fr);gap:22px}
+.v2-page-talent-review .v2-section-host>.ppl-card,.v2-page-talent-settings .v2-section-host>.ppl-card{padding:24px}
+/* 面板比原来的整行卡窄：定宽列的 Semi 表格在面板内横向滚动，不再被卡片裁掉 */
+.v2-section-host .semi-table-wrapper,.v2-section-host .semi-table-container,.v2-section-host .semi-table-body{max-width:100%;overflow-x:auto}
+@media(max-width:1250px){.v2-section-host>.ppl-card{padding:24px}}
+@media(max-width:640px){.v2-section-host>.ppl-card{padding:22px}}
+/* 下属档案页顶部的「只读视图」提示复用了 .ml-empty，方案把 .ml-empty 画成 70px 高的虚线空态框，这里收回成一行提示 */
+.v2-layout .ml-empty.rp-readonly{padding:12px 18px;font-size:13px;border-style:solid;border-radius:14px;color:var(--ink-2)}
+/* 员工端账号菜单：头像按方案的圆角方块 */
+.v2-layout .usermenu .avatar{width:38px;height:38px;border-radius:11px;background:var(--brand-050);color:var(--brand);border:1px solid var(--brand-100)}
+.v2-layout .usermenu-pop{border-radius:13px;padding:6px;box-shadow:0 14px 36px #25294014}
+/* 员工端侧栏里的「培训▾」下拉：在侧栏内原地展开，不再浮层 */
+.v2-employee-side .nav-dd{position:static}
+.v2-employee-side .nav-dd-pop{position:static;min-width:0;background:transparent;border:0;box-shadow:none;padding:6px 0 2px 14px;display:flex;flex-direction:column;gap:2px}
+.v2-employee-side .nav .nav-dd-pop a{color:#aab0cb;font-size:12px;padding:9px 12px;border-radius:8px}
+.v2-employee-side .nav .nav-dd-pop a:hover{color:#fff;background:#ffffff0a}
+.v2-employee-side .nav .nav-dd-pop a.active{color:#fff;background:#ffffff14}
+.v2-employee-side .nav .nav-dd-btn{text-align:left}
+.v2-employee-side .nav .nav-dd-btn[aria-expanded="true"] svg:last-child{transform:rotate(180deg)}
+.v2-employee-side .nav a[data-culture-nav]{color:#c9cee3}
+/* 品牌区固定在侧栏顶部时，文字标志用白字 */
+.v2-layout .topbar>.brand .brand-wordmark{color:#fff}
+/* 员工端侧栏在 ≤900px 隐藏，而原底部标签栏只在 ≤820px 出现：补上 821–900px 这段 */
+@media (max-width:900px){.v2-employee .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;height:60px;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}.v2-employee .tabbar-spacer{display:block;height:calc(60px + env(safe-area-inset-bottom))}.v2-employee .tabbar-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:500;color:var(--ink-3);text-decoration:none}.v2-employee .tabbar-item svg.ic{width:22px;height:22px}.v2-employee .tabbar-item.on{color:var(--brand)}}
+/* 培养项目列表（MyProjects）的页头用的是 .cat-head/.cat-title，与其它员工端页面的 .ml-head h1 统一成同一规格 */
+.v2-layout .cat-head{margin-bottom:30px}
+.v2-layout .cat-title{font-size:34px;font-weight:750;letter-spacing:-.045em;line-height:1.3}
+.v2-layout .cat-lead{margin-top:8px;color:var(--ink-2)}
+@media(max-width:640px){.v2-layout .cat-title{font-size:28px}}
+/* 考试作答页右上角的固定计时器：顶栏从 56px 加高到 80px，计时器相应下移，不再压在顶栏上 */
+@media(min-width:901px){.v2-layout .exam-timer{top:96px;right:40px}}
+/* 手机上课程卡：app.css 在 ≤560px 让 .cact 占满一行（flex-basis:100%），而方案把卡片改成了纵向排列，这个 100% 会变成高度，按钮被拉成一整块 */
+@media(max-width:640px){.v2-layout .pcard>.cact{flex-basis:auto;width:100%;margin-top:auto}.v2-layout .pcard>.cact .btn{width:auto;min-width:100px}}
+
+/* ===== 验收修正（2026-10-06 全量验收）===== */
+/* 成绩页深色侧栏：原 .res-meta/.res-note 用 --ink-2 灰字，在 navy 上对比度不足 3:1 */
+.v2-result-rail .res-meta,.v2-result-rail .res-note{color:#c5cbdf}
+.v2-result-rail .res-meta .dot{color:#8f96ad}
+.v2-result-rail .res-head h1{overflow-wrap:anywhere}
+/* 员工名册：职位/职级分列后表格需 ~1190px，1440 宽下左侧统计栏（158px）会让表格在卡片内横向滚动、「最近登录」列被截；
+   1600px 以下改用方案 ≤900px 的叠放形式（统计条横排在表格上方），表格拿回整行宽度 */
+@media(max-width:1599px){
+
+.v2-page-employees .emp-stat.on{border-left:3px solid var(--brand)}
+
+}
+
+/* AI 治理并入审计日志页的第二个分节：嵌入模式没有页头，卡片之间留 18px，内边距按面板规格 */
+
+.aig-embedded-h .tset-lead{max-width:80ch}
+
+/* 验收修正：课程页「本课程已完成」横幅在 ≤640px 时文字列被按钮挤成两行，按钮改为独占一行 */
+@media(max-width:640px){.v2-layout .done-ban{flex-wrap:wrap}.v2-layout .done-ban .btn{flex:1 1 100%;justify-content:center}.v2-layout .done-ban-body{flex:1 1 calc(100% - 44px)}}
+
+/* 验收修正：员工名册表格（职位/职级分列后约 1190px）在 1500px 以下仍比卡片宽，收紧单元格内边距避免「最近登录 / 操作」列被截（1440 下差 68px、1366 下差约 100px） */
+
+/* 验收修正：方案 theme.css 允许 .semi-button-content 换行，题库等表格「操作」列窄时「编辑/删除」被拆成两行竖排；表格里的按钮文字不换行 */
+.v2-layout .semi-table .semi-button-content{white-space:nowrap}
+
+/* 验收修正（她 10/6 指出）：员工档案左栏的工号 / 部门 / 职位 / 入职等信息行居中，与左对齐的姓名和标签不一致，统一左对齐 */
+
+.v2-person-rail .ppl-id-meta>*{justify-content:flex-start}
+
+/* 考前说明「卷面总分」行下的题型分值说明 */
+
+.exam-qpts{margin-left:2px}
+
+/* 验收遗留修正（2026-10-06 下午）：考试管理表格在 1440 下比卡片宽 27px，与员工名册同样在 1500px 以下收紧内边距 */
+
+/* 题库筛选条手机端横向滚动：右侧加渐隐，提示还能往右滑 */
+
+/* ===== 2026-10-06 负责人决定：后台左栏与员工端左栏统一（大项、13px、12px 内边距、6px 间距；分组标题保留）。
+   项数多，短屏下左栏自身滚动，滚动条隐藏。 ===== */
+
+.v2-layout .adm-nav-label{font-size:10px;padding:14px 12px 8px;letter-spacing:1.2px}
+.v2-layout .adm-nav-item{font-size:13px;gap:11px;padding:12px 12px;line-height:1.45;border-radius:11px;margin-bottom:6px}
+.v2-layout .adm-nav-item .adm-nav-ico,.v2-layout .adm-nav-item svg{width:18px;height:18px;flex:0 0 18px}
+.v2-employee-side .nav a,.v2-employee-side .nav .nav-dd-btn{border-radius:11px}
+/* 后台左栏一级目录可折叠（负责人 2026-10-06）：分组标题是带图标与箭头的按钮，二级项缩进、缺省只展开当前分组；与员工端侧栏「培训▾」同一做法 */
+.v2-layout .adm-nav-grp{width:100%;background:transparent;border:0;cursor:pointer;text-align:left;font:inherit;display:flex;align-items:center;gap:11px;padding:12px 12px;border-radius:11px;color:#c9cee3;font-size:13px;font-weight:600;margin-bottom:2px}
+
+.v2-layout .adm-nav-sub .adm-nav-item{font-size:12.5px;padding:9px 12px;margin-bottom:2px;color:#aab0cb;font-weight:500;border-radius:9px}
+
+/* 角色页与档案设置页左栏（负责人 2026-10-06）：页头按钮不折行、角色列表项与记录类型菜单改为浅底选中态；body 类为 v2-page-roles / v2-page-talent-settings */
+
+.v2-page-roles .tset-head-act .semi-button,.v2-page-talent-settings .tset-head-act .semi-button{white-space:nowrap;height:40px;padding:0 18px;border-radius:10px}
+
+.v2-page-roles .role-item{border-radius:12px;padding:12px 14px!important;color:var(--ink);transition:background .12s}
+.v2-page-roles .role-item:hover{background:#f6f5fd}
+.v2-page-roles .role-item.on{background:var(--brand-050);box-shadow:inset 3px 0 0 var(--brand)}
+
+.v2-page-talent-settings .tset-menu .adm-nav-item{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;border-radius:10px;padding:10px 12px;font:inherit;font-size:13px;font-weight:500;color:var(--ink-2);cursor:pointer;box-shadow:none;margin:0;line-height:1.4}
+
+/* 角色页成员区：「N 名成员」与「添加成员」同高、同字号、同圆角（负责人 2026-10-06） */
+.v2-page-roles .ppl-sec-h .role-count{height:36px;padding:0 14px;border-radius:9px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;line-height:1}
+
+/* 第二批 W3-C（2026-10-08，3.2 V4）：说明文字限行宽。角色与授权、档案与职级设置、功能模块等页的说明原先每行 46–70 个汉字 / 100+ 个英文字符；
+   统一到 42em（中文约 42 字一行，英文约 85 字符）。写在 v2.css 末尾，才能压过上面同权重的 .tset-lead{max-width:80ch}。 */
+.tset-lead,.emp-lead,.co-lead,.rec-sub,.ml-lead,.mods-desc,.tset-renamehint,.tset-userhint,.rv-note,.rv-hint,.u-lead,.aig-embedded-h .tset-lead{text-wrap:pretty}
+/* 波次 3 复核（V4）：档案与职级设置字段表下的说明（Semi Text，直接挂在 .tset-content 下）与 .tset-foot（原 78ch）同样限 42em */
+
+/* 测试反馈（10/8）：置灰的 .btn 原为白字 + brand-100 浅紫底（app.css），对比度约 1.4:1，看不清按钮上的字。
+   改为浅灰底 + ink-3 字，保留 not-allowed 光标；全站 .btn 统一，悬停不变色。 */
+.btn:disabled,.btn[aria-disabled="true"],.btn:disabled:hover,.btn[aria-disabled="true"]:hover{background:var(--line-2);color:var(--ink-3);border-color:var(--line);box-shadow:none;opacity:1}
+/* 测试反馈（10/8）：HoD 部门校准筛选条里「二级 / 三级部门」占位在 dpf-sm 的 150px 下被截断，放宽到 168px */
+.dcal-filters .dpf-sm .dpf-trigger{min-width:168px}
+/* 上一条复测仍截断（测试会话 10/8，有二级部门的数据，中文 1440）：中文占位改为「子部门」（与英文 Sub-department 对应），
+   并再次声明占位与选中值不换行、超长显示省略号 */
+.dcal-filters .dpf-trigger-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 测试反馈（10/8）：HoD 部门校准手机版的配额条原为单行横滑（app.css ≤640px nowrap + overflow-x），390 宽只露出 A+、A、B+，
+   B 与 C/D 在屏幕外且看不出能滑。配额是提交前必看的信息，手机版改为三列网格、五档全部可见；每格档位在上、人数 / 名额在下 */
+@media (max-width:640px){
+  .dcal-tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow:visible;padding-bottom:0}
+  .dcal-tier{flex-direction:column;align-items:flex-start;gap:2px;min-width:0;padding:6px 10px;text-align:left}
+  .dcal-tier > span{max-width:100%;overflow-wrap:anywhere}
+}
+/* ===== 第二批 8.4（F26，2026-10-08）：左栏滚动后菜单项从品牌区下面穿过、与 logo 重叠。品牌区（.topbar>.brand，fixed、透明底）
+   下面原本就是可滚动的左栏。改为：左栏从品牌区下沿开始（菜单只在品牌区以下滚动），品牌区补一块与左栏同色的固定底
+   （挂在 .topbar 上：只有带左栏的页面才有顶栏，登录、改密等无左栏页面不受影响）。员工端左栏原来不能滚动，项多时超出屏幕，
+   一并改为可滚动（滚动条隐藏，与后台一致）。logo 位置、大小与观感不变；≤900px（抽屉 / 手机底栏）不受影响。 ===== */
+@media (min-width:901px){
+  .v2-layout .topbar::before{content:'';position:fixed;top:0;left:0;width:224px;height:104px;background:var(--navy);pointer-events:none}
+  .v2-employee .topbar::before{height:122px}
+  
+  .v2-employee-side{top:122px;height:calc(100vh - 122px);padding-top:0;overflow-y:auto;scrollbar-width:none}
+  .v2-employee-side::-webkit-scrollbar{display:none}
+}
+/* ===== 第二批 2.8（2026-10-08）绩效申诉台 /admin/review-appeals（rap-*）与 HRBP 分工 /admin/hrbp-coverage（hrbp-*） ===== */
+
+.rap-emp{display:flex;flex-direction:column;gap:2px;min-width:0}
+.rap-emp b{font-weight:600;overflow-wrap:anywhere}
+
+.rap-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.rap-card{min-width:0}
+
+.rap-files li{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
+
+.rap-file-n{flex:1 1 200px;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.rap-dist th,.rap-dist td{padding:8px 10px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap}
+
+.rap-consults li{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+
+.rap-tl li{position:relative;display:flex;flex-direction:column;gap:2px;font-size:13px}
+
+@media (max-width:640px){
+
+.rap-dist th,.rap-dist td{padding:7px 6px}
+
+}
+
+/* HRBP 分工 */
+
+.hrbp-row{display:grid;grid-template-columns:minmax(220px,2.2fr) minmax(90px,.8fr) minmax(150px,1.6fr) minmax(150px,1.6fr) 80px;gap:12px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--line-2);font-size:13px;min-width:0}
+.hrbp-row>*{min-width:0}
+
+.hrbp-row.is-off{color:var(--ink-3)}
+
+.hrbp-dept-t b{font-weight:600;overflow-wrap:anywhere}
+
+.hrbp-caret:hover{background:var(--line-2);color:var(--ink)}
+
+/* 测试反馈（10/8，第 2 批补充）：员工申诉页周期名作副标题；HRBP 分工页顶部说明与提示条限行宽（英文一行原约 143 字符） */
+.rv-ap-head .rv-ap-cycle{flex-basis:100%;margin-top:2px;color:var(--ink-2);font-size:14px}
+
+/* ===== 第三批 B3-G4 课程库列表与筛选（2026-10-08）===== */
+/* 10.3 / 4.3 课程库只用列表，一行一门课：紧凑行高（1440×900 一屏 10 行以上），表格放在一张卡片里；≤900px 由 cardify 变成每门课一张卡片 */
+
+.v2-layout .co-filters-b3 .co-chips{min-width:0}
+.v2-layout .co-filters-b3 .co-fsel{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}
+
+.v2-layout .co-ctable{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0}
+
+.v2-layout .co-ctable .co-row-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;min-width:0}
+.v2-layout .co-ctable .co-row-link{border:0;background:none;padding:0;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;line-height:1.4}
+
+/* 页头「课件转换」按钮：视频转码不可用或有失败时，圆点取更差的状态 */
+
+/* 平板 / 手机：表格卡片化（每门课一张卡片，不出现整页横向滚动）；搜索整行，状态在本行内横向滚动，四个下拉两列 */
+@media (max-width:900px){
+  .v2-layout .co-ctable{background:none;border:0;border-radius:0;overflow:visible}
+  
+}
+@media (max-width:640px){
+  
+  .v2-layout .co-filters-b3 .co-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+
+}
+
+/* ===== 第三批 B3-G5 学习包详情与课程学习页（2026-10-08）===== */
+/* 5.1 学习包详情：学习路径撑满内容区；每一步是一张卡片（序号、文字、按钮在同一张卡片里），不再卡片套卡片 */
+.v2-layout .pg-steps{max-width:none;margin:0}
+.v2-layout .pg-step{padding:20px 24px;gap:20px;border-radius:16px}
+.v2-layout .pg-step .pg-info{background:none;border:0;padding:0;border-radius:0}
+.v2-layout .pg-step.current{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-050)}
+@media (max-width:640px){.v2-layout .pg-step{padding:16px;gap:12px}}
+
+/* 5.2 课程学习页：纯文字模块（无视频、课件、音频、附件）不再留右半边空白——卡片仍占满宽度与页头对齐，
+   卡片内的标题、正文与底部按钮收成一栏、居中，行宽中文约 42 字、英文约 70 字符。含媒体的模块保持原样。 */
+.v2-page-course{--g5-measure:42em}
+html:lang(en) .v2-page-course{--g5-measure:70ch}
+
+@media (min-width:1440px){.v2-page-course .course .prose{font-size:16px}}
+
+/* ===== 第三批 B3-G6 10.1 单行输入框文字垂直居中（全站）（2026-10-08）===== */
+/* 原因：本文件前面把 Semi 输入框 / 下拉的最小高度提到 38px（body .semi-input-wrapper,body .semi-select{min-height:38px}），
+   但 Semi 不带前后缀的输入框外壳是 inline-block、里面的 input 固定 30px 高（small 22px），下拉的 .semi-select-selection 按 height:100%
+   （32px）算，文字都贴上沿。改为：输入框外壳与 Semi 自己带前缀 / 后缀 / 清除按钮的变体一样，用 inline-flex 垂直居中；
+   下拉的选中区拉伸到整个高度再居中（多选下拉同样适用）。多行文本框是 .semi-input-textarea-wrapper，不受影响。
+   题库编辑器选项行（Questions.jsx .qb-optrow）：单选 / 多选框、字母序号、删除按钮与 38px 输入框同一中线（手机上中英两个输入框叠成两行时对齐第一行）。
+   原生 .rv-inp / .rv-sel（绩效页面）统一行高与盒模型，与同一排的 Semi 控件同一中线。 */
+:root{--ctl-h:38px}
+body .semi-input-wrapper{display:inline-flex;align-items:center}
+body .semi-select .semi-select-selection{height:auto;align-self:stretch}
+
+.rv-sel,.rv-inp{line-height:1.4;vertical-align:middle;box-sizing:border-box}
+
+/* ===== 第三批 B3-G6 全站粘性块检查（10.2 / 8.4 后续，2026-10-08）===== */
+/* 规则（第三批 G4 定）：粘性块 ① 有不透明底色；② 粘住的那段滚动范围里，同一栏（同一栅格列）没有别的内容从它下面经过；
+   栏位在窄屏叠成单栏时，粘性在同一断点关掉（position:static）。吸顶 / 吸底的操作条（顶栏、页签条、保存栏、吸顶导航）本来就盖在
+   所在区域滚动内容的上面，只要求有底色和分隔线。app.css 与 v2.css 里每一条 position:sticky 的检查结果见交接说明 1.48。
+   这里补三处：
+   · 侧栏底色：下面几个侧栏在粘住的范围里独占一列，没有内容从下面经过，补上与页面底色相同的 --surface，看上去没有变化；
+   · 课程编辑器右栏的学员端预览：外面包着只装它一个的 .co-se，粘性本来不起作用，明确改为 static；
+   · 富文本工具条：原来 top:0，在整页滚动时躲到顶栏（80px，≤900px 为 72px）下面看不见；改为贴在顶栏下沿，与 .dcal-sticky / .rvt-pbar 一致。 */
+.co-ed-side,.rs-page-side,.exm-page-side,.v2-person-rail,.v2-section-tabs,.v2-page-employees .emp-statstrip{background:var(--surface)}
+
+/* ===== 第五批 B5-D 人才筛选（2026-10-08）===== */
+/* 整页 TalentFilter.jsx：页头操作、AI 输入、条件编辑器（且 / 或，条件组为带边框卡片）、结果栏与命中标记；TalentReview 三个页签的补充 */
+
+.tf-cond-n{grid-column:1;padding-top:6px;font-size:12.5px;font-weight:600;color:var(--ink-3);text-align:right}
+.tf-cond-main{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.tf-cond-del{grid-column:3;grid-row:1}
+
+.tf-cond-msg{grid-column:2 / 4;font-size:12.5px;color:var(--danger);line-height:1.5}
+.tf-cond-hint{grid-column:2 / 4;font-size:12.5px;color:var(--warning);line-height:1.5}
+
+.tf-hit.is-ok{background:var(--success-bg);color:var(--success)}
+.tf-hit.is-no{background:var(--danger-bg);color:var(--danger)}
+.tf-hit.is-na{background:var(--surface);color:var(--ink-3)}
+
+.tf-colslist li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px}
+
+/* 继任计划：行内就绪度下拉显示完整文字（minWidth 168，内联样式）；窄屏整行换行 */
+
+/* QA D8（§19）：课程库指派弹窗「已指派」名单上方的「全部部门」在中文 1440 下被截成「全部部 门」。此前只在 .dcal-filters 内修过，
+   改为部门筛选组件（DeptFilter）全站生效：触发器文字不换行、超长显示省略号；小号触发器最小宽度 168px，「全部部门 / All departments」完整显示 */
+.dpf-trigger-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;word-break:keep-all}
+.dpf-sm .dpf-trigger{min-width:168px}
+
+/* ===== F46 行内对齐与标签统一（2026-10-09）===== */
+/* 首页资料条（宽屏 >1250px）：「查看成长档案」按钮改放在头像 / 姓名那一行的右侧，与头像、职级胶囊同一中线；任职信息行横跨整宽 */
+@media (min-width:1251px){.v2-profile-strip{grid-template-areas:'identity action' 'facts facts'}}
+/* 我的团队与下属档案：行头（头像、姓名、胶囊、「明细」按钮）垂直居中，不再顶端对齐 */
+.v2-layout .tm-head{align-items:center}
+/* F47 员工档案卡（人员档案左栏）：姓名与「PD2 / 正式」等标签同一行，姓名过长时自身换行，标签不掉到下一行 */
+
+/* F47 人才筛选 / 晋升评审名单：姓名与「手动加入 / 已排除 / 已停用」同一行 */
+
+/* ===== UI 批 U1 宽度与版式（2026-10-09）===== */
+/* 11.1 宽度规则 A（负责人 10/9 定）：所有页面内容区撑满，不单独限宽。11.2 正文行宽：正文段落约 45 个汉字一行，卡片撑满，
+   正文右侧放辅助信息（进度、目录、元信息）。11.4 只读胶囊。F50 员工档案布局。F51 ② 组织架构画布撑满。
+   只用变量，不写死颜色；本段追加在 v2.css 末尾，同优先级时以本段为准。 */
+
+/* --- 11.2 正文行宽 token：中文 45em（字号即一个汉字宽，约 45 字），英文 75ch。按使用处元素自身字号换算 --- */
+:root{--read-measure:75ch}
+html:lang(zh-CN){--read-measure:45em}
+
+/* 说明段落（各页页头导语、说明、页脚说明）统一到正文行宽（原 42em ≈ 42 字；课程目录导语原 80ch） */
+.tset-lead,.emp-lead,.co-lead,.rec-sub,.ml-lead,.mods-desc,.tset-renamehint,.tset-userhint,.rv-note,.rv-hint,.u-lead,.aig-embedded-h .tset-lead{max-width:var(--read-measure)}
+
+.v2-layout .cat-lead{max-width:var(--read-measure)}
+
+/* --- 11.2 课程页：正文按自身字号限 45 字、靠左；内容卡撑满；课程目录（模块进度）移到正文右侧 ---
+   原来 .content>* 统一限 42em（按 14px 算 588px）并居中，而正文是 16px，实际一行约 36 字（F43 量到 567px） */
+.v2-page-course .course:not(:has(.content video,.content iframe,.content .pdfviewer,.content audio,.content .attach,.content .wm-video)) .content>*{max-width:none;margin-left:0;margin-right:0}
+.v2-page-course .course:not(:has(.content video,.content iframe,.content .pdfviewer,.content audio,.content .attach,.content .wm-video)) .content .prose{max-width:var(--read-measure)}
+.v2-page-course .course .content .prose{max-width:var(--read-measure);text-wrap:pretty}
+@media (min-width:901px){
+  .v2-layout .course{grid-template-columns:minmax(0,1fr) 260px}
+  .v2-layout .course>.content{order:1}
+  .v2-layout .course>.rail{order:2}
+}
+@media (max-width:1250px) and (min-width:901px){
+  .v2-layout .course{grid-template-columns:minmax(0,1fr) 200px}
+}
+
+/* --- 11.2 学习包页：介绍按正文行宽（原 65ch ≈ 36 个汉字，F43「行为底 / 线。」只剩一个字换行）；总进度环在右侧 --- */
+.v2-layout .pg-desc{max-width:var(--read-measure);text-wrap:pretty}
+
+/* --- 11.1 考前说明：去掉 880 限宽；宽屏时「考试规则」与「注意事项」左右并排，其余整行 --- */
+.ep2-col{max-width:none}
+.ep-sub{max-width:var(--read-measure);text-wrap:pretty}
+.ep2-notes ol{max-width:var(--read-measure);text-wrap:pretty}
+@media (min-width:1200px){
+  .ep2-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:16px;align-items:start}
+  .ep2-col>*{grid-column:1/-1}
+  .ep2-col>.ep2-rules{grid-column:1}
+  .ep2-col>.ep2-notes{grid-column:2}
+}
+
+/* --- 11.1 培训中转页（/learn）：原三列网格首卡占两列，入口少时右侧空三分之一（量到约 1071 / 1616）；
+   改为可伸缩的行，每行最后一张卡补满剩余宽度 --- */
+.v2-layout .hub-grid{display:flex;flex-wrap:wrap;gap:20px}
+.v2-layout .hub-card{flex:1 1 calc((100% - 40px) / 3 - 1px);min-width:0}
+.v2-layout .hub-card:first-child{grid-column:auto;flex-basis:calc((100% - 40px) * 2 / 3 + 19px)}
+@media (max-width:900px){
+  .v2-layout .hub-card{flex-basis:calc((100% - 20px) / 2 - 1px)}
+  .v2-layout .hub-card:first-child{flex-basis:100%}
+}
+@media (max-width:640px){
+  .v2-layout .hub-grid{gap:14px}
+  .v2-layout .hub-card,.v2-layout .hub-card:first-child{flex-basis:100%}
+}
+
+/* --- 11.1 后台新建课程：去掉 1320 限宽（Content.jsx 不动，只改样式），两栏表单随内容区撑满 --- */
+
+/* --- F50 员工档案：1600 及以上也用统计卡横排在顶部（与 1600 以下、与其他页一致），表格紧接筛选；
+   原 1600+ 左侧 158px 统计栏把只读说明挤成十几行，并把筛选与表格之间撑出空白 --- */
+
+/* 批量操作条只在选中行时渲染（Employees.jsx selectedKeys.length > 0），未选中时不进文档流；
+   原来 1600+ 的网格里，未指定区域的元素（说明段落、批量条、出错提示）被自动排进隐式行，才在筛选与表格之间撑出空白。 */
+
+/* --- 11.4 / F47 标题行：标题与「只读」胶囊、「?」说明同一行、垂直居中；放不下时标题自身换行 --- */
+.u-title-line{display:flex;align-items:center;flex-wrap:nowrap;gap:10px;min-width:0}
+.u-title-line>h1,.u-title-line>h2{min-width:0;margin:0}
+.u-title-line>.ro-pill,.u-title-line>.u-help-btn,.co-page-tline>.ro-pill{flex:none}
+
+.u-help-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink-3);cursor:help}
+.u-help-btn:hover,.u-help-btn:focus-visible{background:var(--brand-050);color:var(--brand)}
+.u-help-tip{max-width:var(--read-measure);line-height:1.6}
+
+/* --- F51 ② 组织架构画布撑满内容区（OrgChart.jsx 去掉 1400 限宽；画布本身已是 100%） --- */
+
+/* ===== UI 批 U2 指派弹窗与培养项目列表（2026-10-09）===== */
+/* 11.5（F52）指派弹窗：课程库「指派课程」与培养项目「添加学员」共用 components/AssignPanel.jsx。
+   页签「按条件 / 粘贴工号 / 逐个选择」→ 条件两行（左标签、右等宽选择框）→ 醒目的人数结果条 → 底部左参数、右按钮与不可用原因 */
+
+.asg-help:hover,.asg-help:focus-visible{color:var(--brand);background:var(--brand-050)}
+
+.asg-mode:hover{color:var(--ink)}
+.asg-mode.on{background:var(--card);color:var(--brand);box-shadow:var(--shadow-1)}
+
+.asg-ri b{font-weight:700;color:var(--ink)}
+.asg-ri.warn,.asg-ri.warn b{color:var(--warning)}
+.asg-ri.bad,.asg-ri.bad b{color:var(--danger)}
+
+/* 职级下拉底部的区间行（原「职级段：从 … 至 … 加入」单独一行，现并入下拉） */
+
+/* F53 + 12.1 培养项目列表：表格沿用课程库（co-filters-b3 筛选条、co-ctable 表格、co-row-* 名称格）；
+   状态胶囊在名称右侧同一行（F47），名称过长时名称自身换行；390 宽每行一张紧凑卡片，操作在卡片底部 */
+
+@media (max-width:640px){
+
+.adm-main .tp-ctable .tp-mcard{display:flex;flex-direction:column;gap:4px;min-width:0}
+  
+}
+
+/* F54：未选中的侧栏项在悬停（含触屏点按后残留的 :hover）时也铺上整块浅色底，与选中项同形，
+   截图里「HRBP 分工」与「角色与授权」因此像同时被选中。整块填充只留给当前页（.on）；
+   悬停只提亮文字与图标，键盘焦点仍由全局 :focus-visible 描边提示。 */
+
+/* ===== G1 / G2 培养项目起止日期两行、部门筛选触发器（2026-10-09）===== */
+/* G1：起止日期开始在上、结束在下，各自不断开 */
+
+.tp-dates>span{white-space:nowrap}
+/* G2：所有部门筛选触发器的文字一行显示、放不下用省略号；触发器本身不被父级 flex 压窄 */
+.dpf{flex:none}
+.dpf-trigger{white-space:nowrap}
+.dpf-trigger .dpf-trigger-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;word-break:keep-all;overflow-wrap:normal}
+
+/* ===== F58–F61 R3（2026-10-09）===== */
+/* F60 人才盘点页面范围。追加到 v2.css 末尾；只用变量，不写 hex / rgb。
+   F47：「范围内继任者 N」胶囊在关键岗位名右侧同一行、垂直居中，放不下时岗位名自身换行。
+   人才筛选整页的「已叠加页面顶部筛选」提示：文字与「不叠加顶部筛选」按钮同一行，窄屏时按钮换到下一行。 */
+
+.tf-scope-hint b{color:var(--ink)}
+
+/* ===== F58–F61 W3（2026-10-09）===== */
+/* 12.2 工作台三层（web/src/pages/admin/workbench/*）。追加到 v2.css 末尾；只用变量，不写 hex / rgb。
+   宽度规则 A：内容区撑满（覆盖 app.css 的 .dash-wrap 1180 限宽）。F46：行内居中、同一行胶囊同高同式样、按钮区不另设底色。
+   F47：胶囊在所属文字右侧同一行、垂直居中，放不下时文字自身换行。F48：图标一律 svg.ic。
+   断点：组织风险卡 ≥1200 三列、768–1199 两列、<768 一列；第三层上排三块 ≥1200 三列，其下单列；
+   部门健康度表与名单 <768 由组件改为卡片（不横向滚动）。 */
+
+/* 统一胶囊（F46） */
+.wb-wrap .pill{display:inline-flex;align-items:center;height:24px;padding:0 9px;font-size:11.5px;line-height:1;border-radius:6px;white-space:nowrap;flex:none}
+
+/* 页头：只放标题、视角胶囊与一句导语，不再放 KPI */
+
+/* 层 */
+
+.wb-layer .wb-fold{flex:none;display:inline-flex;align-items:center;gap:6px;width:auto;background:transparent}
+
+/* 通用卡片 */
+
+.wb-wrap .wb-listlink,.wb-wrap .wb-go,.wb-wrap .wb-back{display:inline-flex;align-items:center;gap:6px;width:auto;flex:none;justify-content:center}
+
+/* 第一层 需要处理 */
+
+/* 第二层 组织风险 */
+
+/* 第三层 人才结构与组织效能 */
+
+.wb-seg-btn.on{border-color:var(--brand);color:var(--brand);background:var(--brand-050)}
+
+/* 部门健康度对照表 */
+
+.wb-htable th,.wb-htable td{padding:9px 8px;border-top:1px solid var(--line-2);text-align:left;vertical-align:middle;overflow-wrap:anywhere}
+
+.wb-th-sort.on{color:var(--brand)}
+
+/* Action 3+3 挑战落地 */
+
+/* 名单整页 */
+
+.wb-ltable th,.wb-ltable td{padding:10px 8px;border-top:1px solid var(--line-2);text-align:left;vertical-align:middle;overflow-wrap:anywhere}
+
+span.wb-lname{cursor:default;color:var(--ink)}
+
+/* ---- W1 / W2（测试会话 2026-10-09 工作台验收）：只追加 ---- */
+/* W1：工作台「绩效分布与配额偏离」卡头的周期胶囊在 1440 宽被硬截 → 单行 + 省略号（.pill 是 inline-flex，省略号需要 display:block 的文字容器） */
+
+/* W2：关键岗位清单的备注列文字顶到右侧固定「操作」列 → 备注单元格留右内边距；固定列不透明、带左边线，不盖住内容 */
+.kp-table .semi-table-row-cell:not(.semi-table-cell-fixed-right){padding-right:16px}
+
+/* W1 返工：胶囊里的文字容器承担省略号（.pill 是 flex，匿名文字项不吃 text-overflow） */
+.wb-period>.wb-period-text{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* W4：关键岗位清单表头按单词换行，不在单词中间断行 */
+.kp-table .semi-table-row-head,.kp-table .semi-table-row-head-inner{word-break:normal;overflow-wrap:normal;white-space:normal;hyphens:none}
+/* W4 第二轮：Semi 自带 .semi-table-thead>.semi-table-row>.semi-table-row-head{overflow-wrap:break-word} 特异性 (0,3,0) 盖过上一条，这里按同链路加 .kp-table 提到 (0,4,0) */
+
+/* CX-012：评估周期表「周期」列不在单词中折行；进度徽章不折成多行（2026-10-09 验收） */
+
+.v2-page-reviews .rvc-prog-wide .pill{white-space:nowrap}
+/* CX-017：人才盘点「未定位 / 未纳入」名单弹窗在手机宽度改为堆叠卡片，不横向滚动、工号不折行 */
+
+/* CX-029：后台项目详情页签条在 390 宽横向滑动，不撑破页面；按钮不折字 */
+
+.v2-page-projects .semi-button-content{white-space:nowrap}
+/* CX-022：人才盘点 390 宽「已定位 n / 总数」把总数也显示出来（原来手机上隐藏） */
+
+/* CX-031：弹窗里的下拉选中文字不被箭头遮住 */
+.v2-layout .semi-modal .semi-select-selection{min-width:0}
+.v2-layout .semi-modal .semi-select-selection-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:4px}
+/* 一致性整改 1（2026-10-09）：页面内容宽两档 —— 表格页满宽（随 .adm-main / .wrap 的页面级宽），表单阅读页 --page-read。各页只选档位，不再各自写死 max-width */
+:root{--page-wide:none;--page-read:960px}
+
+.v2-layout .rv-wrap{max-width:var(--page-read)}
+.v2-layout .rv-wrap.rv-wide{max-width:var(--page-wide)}
+/* 一致性整改 2（基础层）：表头不在单词中折行；表格里的状态胶囊不折行。标题列左锁定 / 操作列右锁定 / 手机卡片按页逐步做 */
+.v2-layout .semi-table-thead>tr>th{word-break:normal;overflow-wrap:normal;hyphens:none}
+.v2-layout .semi-table .pill{white-space:nowrap}
+/* CX-017 第二轮：名单弹窗手机宽度的卡片 */
+
+/* CX-039（2026-10-10，负责人定不做硬约束）：非上限档位超出参考名额的软提示 */
+.dcal-tier.over-soft{border-color:var(--warning);background:var(--warning-bg);color:var(--warning)}
+.dcal-tier.over-soft b,.dcal-tier.over-soft em{color:var(--warning)}
+/* 一致性整改 2：DataTable 包装的通用样式（标题列不在单词中折行、操作列靠右、锁定列底色） */
+
+/* 一致性整改 2：已有锁定列的表（答卷 / 题库 / 课程库 / 员工 / 考试 / 发展项目）标题列同样不在单词中折行 */
+.v2-layout .rs-empcol,.v2-layout .qb-stemcol,.v2-layout .exm-namecol,.v2-layout .emp-namecol,.v2-layout .tp-namecol{word-break:normal;overflow-wrap:normal;hyphens:none}
+/* 绩效看板第一期（2026-10-10）：后台页签、计数条、转移矩阵上调 / 下调色；员工端经理看板卡片 */
+
+.pd-tab.on{color:var(--brand);border-bottom-color:var(--brand);font-weight:650}
+
+.tdb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.tdb-card{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:14px 16px;min-width:0}
+.tdb-h{font-size:12.5px;color:var(--ink-3);margin-bottom:8px}
+.tdb-bars{display:grid;gap:6px}
+.tdb-bar{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:8px;font-size:12.5px}
+.tdb-track{position:relative;height:8px;border-radius:99px;background:var(--line-2)}
+.tdb-track i{position:absolute;left:0;top:0;height:100%;border-radius:99px;background:var(--brand)}
+.tdb-track em{position:absolute;top:-3px;width:2px;height:14px;background:var(--ink-3)}
+.tdb-list{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13px}
+.tdb-list li{display:flex;justify-content:space-between;gap:8px}
+.tdb-trend{display:grid;gap:6px;font-size:12.5px}
+.tdb-trend-row{display:grid;grid-template-columns:minmax(0,1fr) auto}
+@media (max-width:900px){.tdb{grid-template-columns:1fr}}
+/* 组织绩效（2026-10-10）：后台与员工端互评 */
+
+.op-issues{margin:0;padding-left:20px;display:grid;gap:6px;font-size:13.5px;line-height:1.6}
+
+.op-me{display:grid;gap:16px}
+.op-round-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:6px}
+.op-round-h h2{margin:0;font-size:17px}
+.op-rubric{display:grid;gap:0;margin:8px 0 14px;border:1px solid var(--line);border-radius:12px;overflow-x:auto;font-size:12px}
+.op-rubric-row{display:grid;grid-template-columns:150px repeat(5,minmax(120px,1fr));border-top:1px solid var(--line-2)}
+.op-rubric-row:first-child{border-top:0}
+.op-rubric-row>span{padding:8px 10px;line-height:1.5;color:var(--ink-2)}
+.op-rubric-row>span small{display:block;color:var(--ink-3)}
+.op-rubric-head>span{font-weight:650;color:var(--ink)}
+.op-band{border-radius:8px;margin:4px;color:var(--card)!important}
+.op-band-1{background:var(--danger)}.op-band-3{background:var(--warning)}.op-band-5{background:var(--ink-3)}.op-band-7{background:var(--success)}.op-band-9{background:var(--brand)}
+
+.op-issue{display:grid;gap:4px;font-size:13px}
+.op-issue textarea{border:1px solid var(--line);border-radius:8px;padding:8px;font:inherit;resize:vertical;min-height:56px}
+.op-acts{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+@media (max-width:640px){.rv-views.rv-views-6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:16px;width:100%}.rv-views.rv-views-6 .rv-view-tab{min-width:0;white-space:normal;line-height:1.25;padding:7px 4px;border-radius:12px}}
+/* 绩效看板验收（QA 第 31 节）：经理卡片数字列定宽右对齐、配额图例、周期名不折行 */
+.tdb-bar{grid-template-columns:36px minmax(0,1fr) 96px}
+.tdb-bar>span{text-align:right;white-space:nowrap}
+.tdb-legend{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.tdb-trend-row{grid-template-columns:1fr;gap:2px}
+.tdb-trend-row>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:var(--ink)}
+/* QA 32-1（2026-10-10）：员工端组织互评在 390 宽不撑破页面 —— 卡片与网格项 min-width:0，评分参照表在自身容器里横向滚动 */
+.op-me,.op-round,.op-mine{min-width:0;max-width:100%}
+.op-round,.op-mine{overflow:hidden}
+.op-rubric{max-width:100%;-webkit-overflow-scrolling:touch}
+.op-rubric-row{min-width:750px}
+
+/* 组织互评逐部门一屏（负责人 2026-10-10）：进度、打分按钮、卡点、确认页 */
+.op-progress{display:grid;gap:6px;margin:6px 0 14px}
+.op-progress-t{font-size:13px;font-weight:650;color:var(--ink-2)}
+.op-progress-bar{display:block;height:6px;border-radius:99px;background:var(--line-2);overflow:hidden}
+.op-progress-bar>i{display:block;height:100%;background:var(--brand);border-radius:99px;transition:width .2s ease}
+.op-step{display:grid;gap:14px;min-width:0}
+.op-step-h{margin:0;font-size:19px;color:var(--ink);overflow-wrap:anywhere}
+.op-step>.link-btn{justify-self:start}
+.op-step .op-rubric{margin:0}
+.op-dim2{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);min-width:0}
+.op-dim2-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.op-dim2-h b{font-size:14.5px;color:var(--ink)}
+.op-dim2-h small{font-size:12.5px;color:var(--ink-3)}
+.op-chips{display:grid;grid-template-columns:repeat(10,minmax(0,1fr)) minmax(64px,auto);gap:6px}
+.op-chip{min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px}
+.op-chip:hover:not(:disabled){border-color:var(--brand);color:var(--brand)}
+.op-chip:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+.op-chip.on{background:var(--brand);border-color:var(--brand);color:var(--card)}
+.op-chip-na{font-size:13px;font-weight:500;color:var(--ink-2)}
+.op-chip-na.on{background:var(--ink-3);border-color:var(--ink-3);color:var(--card)}
+.op-chip:disabled{cursor:default;opacity:.75}
+.op-chip.on:disabled{opacity:1}
+.op-hint{font-size:12.5px;line-height:1.55;color:var(--ink-2);padding:6px 10px;border-radius:8px;background:var(--line-2);border-left:3px solid var(--ink-3)}
+.op-hint-1{border-left-color:var(--danger)}.op-hint-3{border-left-color:var(--warning)}.op-hint-7{border-left-color:var(--success)}.op-hint-9{border-left-color:var(--brand)}
+.op-step .op-issue span{font-size:13.5px;color:var(--ink-2)}
+.op-step .op-issue span b{color:var(--ink)}
+.op-skip{margin:0;padding:8px 12px;border:1px dashed var(--line);border-radius:10px}
+.op-review{display:grid;gap:10px}
+.op-review-n{display:flex;flex-wrap:wrap;gap:8px}
+.op-review-g{display:grid;gap:6px}
+.op-review-list{display:flex;flex-wrap:wrap;gap:6px}
+.op-review-dept{border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;padding:5px 12px;cursor:pointer;max-width:100%;overflow-wrap:anywhere;text-align:left}
+.op-review-list.ok .op-review-dept{border-color:var(--success);background:var(--success-bg)}
+.op-review-list.skip .op-review-dept{color:var(--ink-3)}
+.op-review-dept.miss{border-color:var(--danger)!important;background:var(--danger-bg)!important;color:var(--danger)}
+.op-review-dept:hover{border-color:var(--brand)}
+.op-acts{flex-wrap:wrap;align-items:center}
+.op-acts-gap{flex:1 1 auto}
+@media (max-width:640px){
+  .op-chips{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .op-chip-na{grid-column:span 5}
+  .op-acts .btn{flex:1 1 auto}
+  .op-acts-gap{display:none}
+}
+
+/* 绩效看板第二、三期（2026-10-10）：申诉原因单选、HoD 部门校准概览、我的绩效概要 */
+.rv-ap-cats{border:0;padding:0;margin:0 0 14px;display:grid;gap:6px;min-width:0}
+.rv-ap-cats legend{padding:0;margin-bottom:2px}
+.rv-ap-cat{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-size:14px;line-height:1.5;background:var(--card)}
+.rv-ap-cat input{margin-top:3px;flex:none}
+.rv-ap-cat.on{border-color:var(--brand);background:var(--brand-050)}
+
+.dco{margin:0 0 14px;padding:0;overflow:hidden;min-width:0}
+.dco>summary{list-style:none}
+.dco>summary::-webkit-details-marker{display:none}
+.dco-sum{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 16px;cursor:pointer}
+.dco-sum::before{content:'';width:8px;height:8px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(-45deg);transition:transform .15s;flex:none}
+.dco[open]>.dco-sum::before{transform:rotate(45deg)}
+.dco-sec{padding:4px 16px 14px;border-top:1px solid var(--line-2);display:grid;gap:8px;min-width:0}
+.dco-sec:first-of-type{padding-top:12px}
+.dco-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.dco-seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.dco-segb{border:0;background:var(--card);color:var(--ink-2);font:inherit;font-size:13px;padding:5px 12px;cursor:pointer}
+.dco-segb.on{background:var(--brand);color:var(--card)}
+.dco-tw{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.dco-t{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
+.dco-t th{text-align:left;font-weight:600;color:var(--ink-3);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.dco-t td{padding:7px 8px;border-bottom:1px solid var(--line-2);color:var(--ink);vertical-align:middle}
+.dco-dim{color:var(--ink-3)}
+.dco-bad{color:var(--danger);font-weight:600}
+.dco-flag{margin-left:6px}
+.dco-chips{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--ink-2)}
+.dco-chips b{color:var(--ink)}
+.dco-sublab{margin-top:4px}
+.dco-reasons{margin:0;padding-left:18px;display:grid;gap:8px;font-size:13.5px}
+.dco-reason{color:var(--ink-2);line-height:1.55;margin-top:2px}
+.mp-sum{margin-bottom:14px}
+.mp-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:8px}
+.mp-block{min-width:0;display:grid;gap:6px;align-content:start}
+.mp-h{font-weight:650;color:var(--ink);font-size:14px}
+.mp-steps{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.mp-step{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-3)}
+.mp-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--line);flex:none;background:var(--card)}
+.mp-step.done{color:var(--ink-2)}
+.mp-step.done .mp-dot{background:var(--success);border-color:var(--success)}
+.mp-step.current{color:var(--ink);font-weight:600}
+.mp-step.current .mp-dot{border-color:var(--brand);background:var(--brand-050)}
+.mp-step.missed .mp-dot{border-color:var(--danger)}
+.mp-miss{color:var(--danger);font-weight:500}
+.mp-next{margin:2px 0 0;font-size:13.5px;color:var(--brand)}
+.mp-latest{margin:0;font-size:14px}
+.mp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.mp-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:1px solid var(--line);border-radius:99px;font-size:12.5px}
+.mp-ap{display:grid;gap:4px}
+@media (max-width:900px){.mp-grid{grid-template-columns:1fr}}
+.mp-step.late .mp-dot{border-color:var(--warning);border-style:dashed}
+.mp-late{color:var(--warning);font-weight:500}
+
+/* 简化 10/11：员工端入口包不再带 Semi 样式表（Semi 只随后台加载）。Semi 原来对全站生效的两条全局规则补在这里，员工端显示不变。 */
+body{-webkit-font-smoothing:antialiased}
+img[src=""],img:not([src]){opacity:0}
+
+/* 10/11 负责人定：深底版、浅底版 logo 都用上（components/BrandMark.jsx）。顶栏品牌区：桌面在深色侧栏顶部显示深底版；
+   ≤900px 回到白色顶栏，上传了浅底版（.brand-lt）时去掉深色药丸底、换成浅底版。 */
+.brand img.logo.logo-light{display:none}
+@media(max-width:900px){
+.v2-layout .topbar>.brand.brand-lt{background:transparent;padding-left:0;padding-right:0}
+.v2-layout .topbar>.brand.brand-lt .logo-dark{display:none}
+.v2-layout .topbar>.brand.brand-lt .logo-light{display:block}
+}
+
+/* 第 3 批复测（10/11）：Semi 样式改随后台加载后顺序变了，多空填空「可接受答案」标签里的文字被 .semi-tag 的 12px 覆盖；恢复为原来的 14px */
+
+/* CX-067（10/11 上线前测试）：Layout v2 把品牌区底色写死为 --navy，品牌设置里的「顶栏品牌底」（--brand-chip：自定义色或透明）保存后不生效。
+   改回优先读 --brand-chip，没配置时仍是深色底；浅底版 logo 的透明底（.on-light、.brand-lt）优先级更高，不受影响。桌面侧栏顶部仍是透明（坐在深色侧栏上）。 */
+.brand{background:var(--brand-chip,var(--navy))}
+@media(max-width:900px){.v2-layout .topbar>.brand{background:var(--brand-chip,var(--navy))}}
+
+/* CX-069（10/11 上线前测试）：手机底部「上一题 / 下一题 / 交卷」三等分用的是 1fr（最小宽 = 内容宽），英文按钮文字不换行时把整行撑出屏幕（390 宽撑到 456）。
+   每列允许缩到 0，按钮文字可换行；中文显示不变。 */
+@media (max-width:820px){.exam-nav{grid-template-columns:repeat(3,minmax(0,1fr))}.exam-nav.is-last{grid-template-columns:repeat(2,minmax(0,1fr))}.exam-nav .btn{min-width:0;white-space:normal;line-height:1.25;text-align:center}}
+
+/* CX-069 补充（10/11 回归 R173）：真正撑宽的是答题卡标题行 —— 不换行的横排里两个标签（英文「12 questions · incl. 1 case group」「Passing score 88%」）
+   最小宽度合计约 402px，把单列网格撑到 440。标题行允许换行，网格子项允许缩小；桌面显示不变。 */
+.exam-sheet-h{flex-wrap:wrap;row-gap:6px}
+.exam-grid>*{min-width:0}
+
+/* CX-081（10/11）：品牌底「透明融入」且没有浅底版 logo 时，白底处显示深色文字品牌名（BrandMark.jsx .wm-ink）；
+   顶栏里它与浅底版图片同一切换规则：桌面在深色侧栏上隐藏，≤900px 显示。 */
+.brand .brand-wordmark.wm-ink,.v2-layout .topbar>.brand .brand-wordmark.wm-ink{color:var(--ink)}
+.brand .brand-wordmark.wm-ink.logo-light{display:none}
+@media(max-width:900px){.v2-layout .topbar>.brand.brand-lt .brand-wordmark.wm-ink.logo-light{display:block}}
+
+/* CX-087（10/11 上线前测试）：成长档案「成长轨迹」计数徽标与标题垂直居中（标题字号大、自带上下边距，顶端对齐时徽标浮在右上方） */
+.v2-record-main .grw-head{align-items:center}
+.v2-record-main .grw-head h2{margin:0}
+/* CX-096：手机宽度下通知弹层相对屏幕定位、左右各留 16px（铃铛不在顶栏最右，按铃铛右对齐会伸出屏幕左边） */
+@media(max-width:640px){.notif-pop{position:fixed;left:16px;right:16px;top:76px;width:auto;max-width:none}}
+
+/* 2026-10-12 页面说明文字：页头导语与操作提示跟随内容区宽度，不再用正文的 45 字阅读宽度提前折行。
+   课程正文仍保留 --read-measure；中文按严格标点禁则换行，英文保持按单词换行。 */
+.tset-lead,.emp-lead,.emp-desc,.co-lead,.co-page-sub,.rec-sub,.rp-sub,.grw-lead,.ml-lead,.mods-desc,.cat-lead,.pg-desc,.exm-lead,.exd-lead,.exm-page-hint,.rs-lead,.qb-lead,.audit-lead,.ovx-lead,.oc-lead,.oc-note,.orgl-lead,.org-page-hint,.tset-renamehint,.tset-userhint,.rv-note,.rv-hint,.u-lead,.u-hint,.tset-foot,.ep-sub,.ep2-notes ol,.aig-sub,.aig-embedded-h .tset-lead{
+  width:100%;
+  max-width:none;
+  line-break:strict;
+  word-break:normal;
+  overflow-wrap:break-word;
+  text-wrap:pretty;
+}
+
+/* 绩效评估员工端（负责人 2026-10-12）
+   1. 宽屏：页面容器与其它员工端页面一样占满内容区（--page-wide），不再限 960px（3200px 屏上只占左侧一小块）。
+      表单类内容仍按 8.5 行宽规范（app.css：.rv-mine .rv-card 自评卡、申诉 / 征询详情卡片）；名单、看板、校准表、空状态占满。
+   2. 一级切换「个人绩效 / 组织绩效」（.rv-mods，卡片式，带一行用途说明）；二级仍是 .rv-views 胶囊页签，只在个人绩效下出现。 */
+.v2-layout .rv-wrap,.v2-layout .rv-wrap.rv-wide{max-width:var(--page-wide)}
+.rv-mods{display:grid;grid-template-columns:repeat(2,minmax(0,300px));gap:10px;margin:14px 0 4px}
+.rv-mod{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius-lg,12px);background:var(--card);font:inherit;text-align:left;cursor:pointer}
+.rv-mod:hover{border-color:var(--brand-100)}
+.rv-mod.on{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand);background:var(--brand-050)}
+.rv-mod:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.rv-mod-t{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:650;color:var(--ink)}
+.rv-mod.on .rv-mod-t{color:var(--brand)}
+.rv-mod-d{font-size:12px;line-height:1.4;color:var(--ink-3)}
+.rv-mods + .ml-lead{margin-top:12px}
+/* 负责人 10/12 看过后定：绩效页内所有卡片同一宽度、占满内容区，不再按 8.5 给表单卡限宽（同页宽窄不一、右侧大块空白）。
+   覆盖 app.css 的自评卡、申诉 / 征询详情卡上限；只有说明文字（.ml-lead / .rv-note）仍按阅读行宽。 */
+.v2-layout .rv-wrap .rv-mine .rv-card,.v2-layout .rv-wrap .rv-ap-page .card,.v2-layout .rv-wrap .rv-cs-detail .card,.v2-layout .rv-wrap .op-round{max-width:none}
+/* 互评汇总：部门下拉（取代胶囊墙）；本部门组织绩效：卡片满宽，「维度 — 分数」短列表限在卡片内 520px，分数紧跟维度名，不被推到最右 */
+.op-review-pick{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:8px}
+.op-review-pick .rv-inp{width:min(420px,100%);max-width:100%}
+.op-step-top{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
+.op-step-top .op-step-h{margin-right:auto}
+.op-dept-sel{width:min(320px,100%)}
+.op-sum-wrap{overflow-x:auto;margin:10px 0 4px;border:1px solid var(--line);border-radius:var(--radius-lg,12px)}
+.op-sum-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.op-sum-tbl th,.op-sum-tbl td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line-2);white-space:nowrap}
+.op-sum-tbl th{font-size:12px;font-weight:600;color:var(--ink-3);background:var(--line-2)}
+.op-sum-tbl .num{text-align:right}
+.op-sum-tbl tr:last-child td{border-bottom:0}
+.op-sum-tbl tr.miss td:first-child{box-shadow:inset 3px 0 0 var(--danger)}
+.op-sum-issue{white-space:normal;min-width:180px;max-width:420px}
+.op-sum-issue span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.op-mine .tdb-list{max-width:520px}
+@media (max-width:640px){.rv-mods{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.rv-mod{justify-content:center;padding:9px 11px}.rv-mod-d{display:none}}
+
+/* ===== Unfolding Lab 品牌（2026-10-12）=====
+   取代 Layout v2 的靛蓝：深墨蓝 #23304a（主色）+ 琥珀金 #eab048（点缀 / 当前项）+ 暖米纸 #f6f3ea（与 unfolding-lab.com 定稿一致）。
+   侧栏底色比主色更深（#1b2538），当前菜单项用金底墨字——墨蓝高亮放在深蓝侧栏上会看不见。
+   这里是缺省值；config.json 的 brand.colors 仍可覆盖。 */
+:root{--brand:#23304a;--brand-hover:#33466b;--brand-active:#172236;--brand-050:#eef1f7;--brand-100:#dbe2ee;--navy:#1b2538;--gold:#eab048;--accent:#23304a;--paper:#f6f3ea}
+.adm-side .adm-nav-item.on{background:var(--gold);color:var(--navy)}
+.v2-employee-side .nav a.active,.v2-employee-side .nav .nav-dd-btn.active{background:var(--gold);color:var(--navy)}
+.adm-side .adm-nav-item.on svg,.v2-employee-side .nav a.active svg,.v2-employee-side .nav .nav-dd-btn.active svg{color:var(--navy)}
+.me-ava{background:var(--brand)}
+.btn:not(.ghost){box-shadow:0 3px 8px #23304a1f}

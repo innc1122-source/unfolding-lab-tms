@@ -1,0 +1,190 @@
+// 绩效评估的原因码文案（第二批 2.2，2026-10-08，审查 P2「Semi 依赖」）：DeptCalibration（员工端，不能引用 Semi）与
+// BulkActions（后台批量提醒结果）共用一份，两边不再各自维护、各自变化。纯 JS，不 import 任何东西。
+//   why     批量 / HoD 提醒的跳过原因：键 = 服务端 BULK_REASONS 的键（server.js），也就是结果行里的 code。
+//   whyHod  HoD 页面里同一个码的补充说法（例如没有在职上级时提示「可由 HoD 代评」），没有的用 why。
+//   issue   部门提交 / HR 确认的阻断项（view.dept.issues / confirmIssues 的 code）。
+//   notice  不阻断的提示（view.dept.notices 的 code）。
+//   err     保存、提交、提醒的错误码（单行 errors[].code 与整体错误的 code）。
+// hod_not_ready 已不再产生（HoD 可以代评，部门未提交照常提醒），词条保留给旧的审计与提醒记录。
+// 中文用「HoD」（员工端评估页现有说法，审查 P2 术语统一）。
+
+const T = {
+  zh: {
+    why: {
+      not_found: '未找到，可能已被删除',
+      cycle_closed: '评估周期已关闭',
+      stage_not_applicable: '该周期没有这一步',
+      not_pending: '这一步已完成',
+      none_pending: '这一步没有待完成的人',
+      self_pending: '尚未提交自评，请先按「自评」提醒',
+      // 服务端只在「面谈」这一步产生：上级一侧还没登记 1 对 1 面谈（server.js judgeItem / BULK_REASONS）
+      manager_pending: '上级尚未登记 1 对 1 面谈，请先提醒上级',
+      no_manager: '没有在职的直属上级',
+      no_hod: '该部门没有 HoD（由 HR 直接确认）',
+      hod_not_ready: '部门内仍有上级未评级或面谈未确认，请先提醒上级',
+      hod_scope_partial: '部门有成员不在你的数据范围内，不能提醒 HoD',
+      hod_is_manager: '你是此人的直属上级，未发送提醒，请在「团队评估」里直接评级',
+      dept_locked: '部门已提交校准，不能再修改',
+      cooldown: '1 小时内已提醒过',
+      recipient_inactive: '收件人已停用或已离职',
+      participant_departed: '员工已离职，不再提醒',
+    },
+    whyHod: {
+      no_manager: '没有在职的直属上级，可由 HoD 代评',
+      self_pending: '员工尚未提交自评，暂不提醒上级',
+      cooldown: '1 小时内已提醒过这位上级',
+      participant_departed: '员工已离职，不计入，也不再提醒',
+    },
+    issue: {
+      rating_missing: (n) => `${n} 人还没有评级`,
+      manager_rating_missing: (n) => `${n} 人还没有上级评级`,
+      hod_rating_missing: (n) => `${n} 人还没有年度评级`,
+      self_missing: (n) => `${n} 人尚未提交自评（自评截止日未到）`,
+      over_quota: (tiers) => `${tiers} 超出名额`,
+      hod_unresolved: '该部门的 HoD 尚未确定，请先在部门页指定负责人',
+      dept_inactive: '该一级部门已停用，请重新启用或把人员调到在用的部门',
+      membership_changed: (added, removed) => `HoD 提交后成员有变动（新增 ${added} 人、移出 ${removed} 人）`,
+      ratings_changed: (n) => `HoD 提交后有 ${n} 人的评级被改动`,
+      self_confirm: '你是该部门的 HoD，不能确认或退回本部门',
+      one_on_one_unconfirmed: (n) => `${n} 人的 1 对 1 面谈未经双方登记（不影响提交）`,
+    },
+    notice: {
+      one_on_one_unconfirmed: (n) => `${n} 人的 1 对 1 面谈未经双方登记（不影响提交）`,
+      participants_departed: (n) => `${n} 人已离职，不计入配额`,
+    },
+    err: {
+      rating_required: '请选择有效的评级',
+      reason_required: '调整上级评级须填写理由',
+      proxy_reason_required: '代评须填写理由',
+      stale: '保存前此人的评级已被改动，请核对后重新填写',
+      manager_not_overdue: '上级在职，评级截止日未过，暂不能代评',
+      use_manager_entry: '你是此人的直属上级，请在「团队评估」里评级',
+      hod_proxied: 'HoD 已代评此人',
+      dept_locked: '部门已提交，不能再修改',
+      not_found: '未找到该评估记录',
+      cycle_closed: '该评估周期已关闭',
+      participant_departed: '此人已离职，不计入配额',
+      duplicate: '同一人在这次保存里出现了不止一次',
+      submit_blocked: '还有未完成的项，暂不能提交',
+      bulk_invalid: (n) => `${n} 行没有通过校验，整批未保存`,
+      // 第二批 2.8：已关闭周期「通知员工并开放申诉」（POST /api/admin/review-cycles/:id/communicate）
+      cycle_open: '周期关闭后才能通知结果。',
+      results_communicated: '本周期结果已通知员工。',
+      results_hidden: '「绩效记录」目前对员工不可见，请先在人才设置中开启员工可见。',
+      pre_feature: '本周期结果在系统内申诉上线前已通知员工，不再开放申诉。',
+      generic: '操作失败，请稍后重试',
+    },
+  },
+  en: {
+    why: {
+      not_found: 'No longer exists',
+      cycle_closed: 'Review cycle closed',
+      stage_not_applicable: 'This cycle has no such step',
+      not_pending: 'Already done at this step',
+      none_pending: 'Nobody pending at this step',
+      self_pending: 'Self-review not submitted. Remind at the self-review step first',
+      manager_pending: 'The manager hasn’t logged the 1-on-1 yet. Remind the manager first',
+      no_manager: 'No active direct manager',
+      no_hod: 'No HoD (HR confirms directly)',
+      hod_not_ready: 'Ratings or 1-on-1s still missing. Remind the managers first',
+      hod_scope_partial: 'Some department members are outside your data scope, so the HoD can’t be reminded',
+      hod_is_manager: 'You are this person’s direct manager, so no reminder was sent. Rate them under Team reviews',
+      dept_locked: 'Department calibration submitted and locked',
+      cooldown: 'Reminded within the last hour',
+      recipient_inactive: 'Recipient disabled or has left',
+      participant_departed: 'The employee has left; no reminder sent',
+    },
+    whyHod: {
+      no_manager: 'No active direct manager. The HoD can rate on their behalf',
+      self_pending: 'The employee hasn’t submitted a self-review yet, so the manager wasn’t reminded',
+      cooldown: 'This manager was reminded within the last hour',
+      participant_departed: 'The employee has left: not counted and no longer reminded',
+    },
+    issue: {
+      rating_missing: (n) => `${n} ${n === 1 ? 'person has' : 'people have'} no rating yet`,
+      manager_rating_missing: (n) => `${n} without a manager rating`,
+      hod_rating_missing: (n) => `${n} ${n === 1 ? 'person has' : 'people have'} no annual rating yet`,
+      self_missing: (n) => `${n} self-review${n === 1 ? '' : 's'} not submitted yet (deadline not passed)`,
+      over_quota: (tiers) => `${tiers} over quota`,
+      hod_unresolved: 'The HoD of this department isn’t set yet. Set the department owner on the Departments page first',
+      dept_inactive: 'This level-1 department is inactive. Reactivate it or move these people to an active department',
+      membership_changed: (added, removed) => `Members changed after the HoD submitted (${added} added, ${removed} removed)`,
+      ratings_changed: (n) => `${n} rating${n === 1 ? '' : 's'} changed after the HoD submitted`,
+      self_confirm: 'You are this department’s HoD, so you can’t confirm or return it',
+      one_on_one_unconfirmed: (n) => `${n} 1-on-1${n === 1 ? '' : 's'} not logged by both sides (doesn’t block submission)`,
+    },
+    notice: {
+      one_on_one_unconfirmed: (n) => `${n} 1-on-1${n === 1 ? '' : 's'} not logged by both sides (doesn’t block submission)`,
+      participants_departed: (n) => `${n} ${n === 1 ? 'person has' : 'people have'} left and ${n === 1 ? 'isn’t' : 'aren’t'} counted`,
+    },
+    err: {
+      rating_required: 'Select a valid rating',
+      reason_required: 'Give a reason for changing the manager rating',
+      proxy_reason_required: 'Give a reason for rating on behalf of the manager',
+      stale: 'This rating changed before you saved. Check it and enter your change again',
+      manager_not_overdue: 'The manager is active and the rating deadline hasn’t passed, so you can’t rate on their behalf yet',
+      use_manager_entry: 'You are this person’s direct manager. Rate them under Team reviews',
+      hod_proxied: 'The HoD has already rated this person',
+      dept_locked: 'The department has been submitted and can no longer be changed',
+      not_found: 'Review record not found',
+      cycle_closed: 'This review cycle is closed',
+      participant_departed: 'This person has left and isn’t counted',
+      duplicate: 'This person appears more than once in this save',
+      submit_blocked: 'Some items are still open, so the department can’t be submitted yet',
+      bulk_invalid: (n) => `${n} row${n === 1 ? '' : 's'} didn’t pass the checks. Nothing was saved`,
+      cycle_open: 'Results can be communicated only after the cycle is closed.',
+      results_communicated: 'Results for this cycle have already been communicated.',
+      results_hidden: 'Performance records are hidden from employees. Make them visible in Talent settings first.',
+      pre_feature: 'Results for this cycle were communicated before in-system appeals were introduced, so appeals are not open.',
+      generic: 'Something went wrong. Try again later',
+    },
+  },
+};
+
+const dict = (lang) => T[lang === 'zh' ? 'zh' : 'en'];
+
+// 整个词典
+export function reviewCodes(lang) { return dict(lang); }
+
+// BulkActions.jsx 用的取法：reviewWhy(code, lang) → 跳过原因文案（没有这个码时返回 code 本身）
+export function reviewWhy(code, lang) {
+  const t = dict(lang).why[code];
+  return t || String(code || '');
+}
+
+// 跳过原因：ctx === 'hod' 时先用 whyHod；都没有时退回服务端随结果行带回的 error / error_zh，再退回 code
+export function whyText(lang, code, ctx, row) {
+  const d = dict(lang);
+  const t = (ctx === 'hod' && d.whyHod[code]) || d.why[code];
+  if (t) return t;
+  if (row) return (lang === 'zh' ? row.error_zh || row.error : row.error || row.error_zh) || code;
+  return code;
+}
+
+// 阻断项 / 提示：issue = { code, n, ids, over:[{tier,count,allowed}], added, removed }
+export function issueText(lang, issue) {
+  const d = dict(lang);
+  if (!issue) return '';
+  const t = d.issue[issue.code];
+  if (issue.code === 'over_quota') {
+    const tiers = (issue.over || []).map((o) => `${o.tier} ${o.count}/${o.allowed}`).join(lang === 'zh' ? '、' : ', ');
+    return t(tiers || '');
+  }
+  if (issue.code === 'membership_changed') return t(issue.added || 0, issue.removed || 0);
+  const n = issue.n !== undefined ? issue.n : Array.isArray(issue.ids) ? issue.ids.length : 0;
+  if (typeof t === 'function') return t(n);
+  return t || issue.code;
+}
+export function noticeText(lang, notice) {
+  const d = dict(lang);
+  if (!notice) return '';
+  const t = d.notice[notice.code] || d.issue[notice.code];
+  const n = notice.n !== undefined ? notice.n : Array.isArray(notice.ids) ? notice.ids.length : 0;
+  return typeof t === 'function' ? t(n) : t || notice.code;
+}
+export function errCodeText(lang, code, n) {
+  const d = dict(lang);
+  const t = d.err[code];
+  if (typeof t === 'function') return t(n || 0);
+  return t || null;
+}

@@ -1,0 +1,28 @@
+# 密钥：照 config.json.example 自己建，绝不进仓库
+config.json
+
+# 运行数据（数据库、上传的附件、日志、备份）
+*.db
+*.db-wal
+*.db-shm
+data/
+logs/
+backups/
+public/videos/
+
+# 便携版 Node 与依赖（Windows 交接包自带 runtime/，不进仓库）
+runtime/
+node_modules/
+
+# 系统杂项
+.DS_Store
+__MACOSX/
+
+# Local secrets and non-source output
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.log
+public/attachments/

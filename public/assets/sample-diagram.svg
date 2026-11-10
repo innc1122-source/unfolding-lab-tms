@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="220" viewBox="0 0 640 220">
+<rect width="640" height="220" rx="14" fill="#eff6ff"/>
+<text x="320" y="34" text-anchor="middle" font-family="Segoe UI,Arial" font-size="18" font-weight="700" fill="#181f32">Data incident escalation flow (demo diagram)</text>
+<g font-family="Segoe UI,Arial" font-size="13" text-anchor="middle">
+<rect x="30" y="70" width="150" height="60" rx="10" fill="#2000f7"/><text x="105" y="105" fill="#fff">Spot the issue</text>
+<rect x="245" y="70" width="150" height="60" rx="10" fill="#4a30ff"/><text x="320" y="97" fill="#fff">Tell your manager</text><text x="320" y="115" fill="#fff">within 1 hour</text>
+<rect x="460" y="70" width="150" height="60" rx="10" fill="#00a2d4"/><text x="535" y="97" fill="#fff">DPO logs &amp; responds</text><text x="535" y="115" fill="#fff">within 24 hours</text>
+<path d="M180 100 h55" stroke="#181f32" stroke-width="2.5" marker-end="url(#ar)"/>
+<path d="M395 100 h55" stroke="#181f32" stroke-width="2.5" marker-end="url(#ar)"/>
+</g>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#181f32"/></marker></defs>
+<text x="320" y="185" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" fill="#595e75">Generated sample image — replace with real material before rollout</text>
+</svg>

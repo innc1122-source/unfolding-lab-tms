@@ -1,0 +1,203 @@
+{
+ "_note": "测试夹具：双通道职级表（M 管理 / P 专业，含同级并列）。test/helpers.js 通过 LMS_TEST_JOB_GRADES 让测试库用它播种；产品新库用 store.js 里的通用职级表。",
+ "ranks": [
+  {
+   "rank": "MO1",
+   "grade": "O",
+   "level": 20,
+   "track": "M"
+  },
+  {
+   "rank": "MO2",
+   "grade": "O",
+   "level": 19,
+   "track": "M"
+  },
+  {
+   "rank": "MO3",
+   "grade": "O",
+   "level": 19,
+   "track": "M"
+  },
+  {
+   "rank": "MV1",
+   "grade": "V",
+   "level": 18,
+   "track": "M"
+  },
+  {
+   "rank": "MV2",
+   "grade": "V",
+   "level": 17,
+   "track": "M"
+  },
+  {
+   "rank": "MV3",
+   "grade": "V",
+   "level": 16,
+   "track": "M"
+  },
+  {
+   "rank": "MA1",
+   "grade": "A",
+   "level": 14,
+   "track": "M"
+  },
+  {
+   "rank": "MA2",
+   "grade": "A",
+   "level": 13,
+   "track": "M"
+  },
+  {
+   "rank": "MA3",
+   "grade": "A",
+   "level": 12,
+   "track": "M"
+  },
+  {
+   "rank": "MB1",
+   "grade": "B",
+   "level": 11,
+   "track": "M"
+  },
+  {
+   "rank": "MB2",
+   "grade": "B",
+   "level": 10,
+   "track": "M"
+  },
+  {
+   "rank": "MB3",
+   "grade": "B",
+   "level": 9,
+   "track": "M"
+  },
+  {
+   "rank": "MC1",
+   "grade": "C",
+   "level": 8,
+   "track": "M"
+  },
+  {
+   "rank": "MC2",
+   "grade": "C",
+   "level": 7,
+   "track": "M"
+  },
+  {
+   "rank": "MC3",
+   "grade": "C",
+   "level": 7,
+   "track": "M"
+  },
+  {
+   "rank": "PV1",
+   "grade": "V",
+   "level": 18,
+   "track": "P"
+  },
+  {
+   "rank": "PV2",
+   "grade": "V",
+   "level": 17,
+   "track": "P"
+  },
+  {
+   "rank": "PV3",
+   "grade": "V",
+   "level": 16,
+   "track": "P"
+  },
+  {
+   "rank": "PA1",
+   "grade": "A",
+   "level": 14,
+   "track": "P"
+  },
+  {
+   "rank": "PA2",
+   "grade": "A",
+   "level": 13,
+   "track": "P"
+  },
+  {
+   "rank": "PA3",
+   "grade": "A",
+   "level": 12,
+   "track": "P"
+  },
+  {
+   "rank": "PB1",
+   "grade": "B",
+   "level": 11,
+   "track": "P"
+  },
+  {
+   "rank": "PB2",
+   "grade": "B",
+   "level": 10,
+   "track": "P"
+  },
+  {
+   "rank": "PB3",
+   "grade": "B",
+   "level": 9,
+   "track": "P"
+  },
+  {
+   "rank": "PC1",
+   "grade": "C",
+   "level": 8,
+   "track": "P"
+  },
+  {
+   "rank": "PC2",
+   "grade": "C",
+   "level": 7,
+   "track": "P"
+  },
+  {
+   "rank": "PC3",
+   "grade": "C",
+   "level": 7,
+   "track": "P"
+  },
+  {
+   "rank": "PD1",
+   "grade": "D",
+   "level": 6,
+   "track": "P"
+  },
+  {
+   "rank": "PD2",
+   "grade": "D",
+   "level": 5,
+   "track": "P"
+  },
+  {
+   "rank": "PD3",
+   "grade": "D",
+   "level": 4,
+   "track": "P"
+  },
+  {
+   "rank": "PD4",
+   "grade": "D",
+   "level": 3,
+   "track": "P"
+  },
+  {
+   "rank": "PD5",
+   "grade": "D",
+   "level": 2,
+   "track": "P"
+  },
+  {
+   "rank": "PD6",
+   "grade": "D",
+   "level": 1,
+   "track": "P"
+  }
+ ]
+}

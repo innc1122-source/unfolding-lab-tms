@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 78" role="img" aria-labelledby="title">
+  <title id="title">其间 Unfolding Lab</title>
+  <defs>
+    <clipPath id="overlap"><circle cx="30" cy="47" r="24"/></clipPath>
+  </defs>
+  <!-- 与 unfolding-lab.com 定稿一致：琥珀圆 + 米白圆，相交处墨蓝；用于深色底 -->
+  <circle cx="30" cy="47" r="24" fill="#eab048"/>
+  <circle cx="54" cy="31" r="24" fill="#f4efe2"/>
+  <circle cx="54" cy="31" r="24" fill="#23304a" clip-path="url(#overlap)"/>
+  <text x="91" y="31" fill="#f6f3ea" font-family="'Noto Serif SC','Songti SC',serif" font-size="24" font-weight="700" letter-spacing="2">其间</text>
+  <text x="91" y="53" fill="#eab048" font-family="Arial,sans-serif" font-size="12" font-weight="700" letter-spacing="2.2">UNFOLDING LAB</text>
+</svg>

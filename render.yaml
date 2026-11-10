@@ -1,0 +1,14 @@
+# Render 蓝图：公开试用站（官网 unfolding-lab.com/tms/ 的「免费试用」指向它）
+# 说明见 docs/DEMO-SITE.md
+services:
+  - type: web
+    name: unfolding-lab-tms
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: DEMO_ADMIN_PASSWORD
+        sync: false   # 部署时在 Render 页面上填，只有你知道

@@ -1,0 +1,127 @@
+{
+  "_README": [
+    "把这个文件复制成 config.json（同目录）再填。config.json 不要提交、不要放进交接压缩包 —— 里面是密钥。",
+    "所有字段都是可选的：不填就走对应的降级路径（AI 走演示模式、邮件不发）。",
+    "改完要重启服务（config.json 是每次读取的，但重启最省心）。"
+  ],
+
+  "production": true,
+  "_production": [
+    "正式部署请保持 true。它等价于环境变量 LMS_PROD=1。",
+    "为什么重要：false（或没有这个字段）时，**全新空库**首启会自动创建一个演示管理员账号",
+    "DEMO-ADMIN / manage2026 —— 密码是写在源码里的，谁都能查到；登录页还会把演示凭据显示出来。",
+    "true 时：不建任何演示账号、Cookie 加 Secure、空库首启在控制台打印一次随机 ADMIN 密码（只打印一次，记下来）。",
+    "只影响**播种新库**和 Cookie/提示；已经有数据的库中途改这个字段不会追溯清理已存在的演示账号。"
+  ],
+
+  "modules": { "learning": true, "performance": true, "talent": true, "ai": false },
+  "_modules": [
+    "商品化模块开关：learning=培训考试、performance=绩效评估、talent=人才发展（九宫格/晋升/继任/检索/AI画像）。",
+    "core（员工档案/组织/认证等底座）没有开关、永远开着。",
+    "方向与 ai/email 相反：那两个是「填了才开」，模块是「明说才关」——",
+    "缺这一整段、缺某个键、或值不是 false 都算开；只有显式 false 才关。所以现有部署不加这段，行为完全不变。",
+    "环境变量 LMS_MODULES_OFF=learning,performance（逗号分隔）把列出的模块强制关掉，优先级高于本配置；列表里的 core 或未知名字会被忽略。",
+    "关掉的模块：对应 API 返回 404（与不存在的路由无区别）、前端隐藏对应界面；数据不删，重新打开即恢复。",
+    "ai（AI 辅助：学习助手、AI 出题、简答题 AI 初评、AI 人才画像）同样 defaultOn:false：IT 接入公司内部 AI 之后写 \"ai\": true。见下方 ai 块与 HANDOVER-IT §10。",
+    "模块开关也可以由超级管理员在后台「系统设置 › 功能模块」页修改：页面写回本文件的 modules 与 ai.features（其它键原样保留），每次修改记审计。"
+  ],
+
+  "brand": {
+    "name": "Unfolding Lab",
+    "name_zh": "其间",
+    "footer": "Unfolding Lab · unfolding-lab.com",
+    "footer_zh": "其间 Unfolding Lab · unfolding-lab.com",
+    "logo": "/assets/brand/unfolding-lab-logo.svg",
+    "logoLight": "/assets/brand/unfolding-lab-logo-light.svg",
+    "favicon": "/assets/brand/unfolding-lab-mark.svg",
+    "colors": { "--brand": "#23304a", "--brand-hover": "#33466b", "--brand-active": "#172236", "--brand-050": "#eef1f7", "--brand-100": "#dbe2ee",
+                "--gold": "#eab048", "--accent": "#eab048", "--navy": "#1b2438", "--surface": "#f2f4f8", "--line": "#e3e8f1", "--line-2": "#eef1f6",
+                "--brand-chip": "transparent", "--brand-chip-sub": "#23304a", "--brand-chip-ink": "#23304a" }
+  },
+  "_brand": [
+    "白标品牌配置。本产品（其间 Unfolding Lab 版 TMS）的品牌已写在上面：名字、logo（深底 / 浅底两版）、favicon、墨蓝金配色。",
+    "不配这一整段 = 通用品牌（Talent Platform / 人才管理平台，文字字标）；所有字段都可选。",
+    "所有字段都可选：不配这一整段、或缺某个键 = 上述通用默认。",
+    "name/name_zh = 品牌名（logo 的 alt 文案；不配 logo 时也用它渲染文字字标）；tagline/tagline_zh = 登录页大标题；footer/footer_zh = 登录页脚注；",
+    "heroLine/heroLine_zh 也认（登录页副标题，默认「成长 · 绩效 · 发展」/ Growth · Performance · Development）。",
+    "新增可配字段（都按 X / X_zh 双语成对，不配 = 通用默认）：welcome/subtitle（登录框标题与副题）、pillA/pillB（登录页两枚胶囊）、brandSub（logo 旁小字）、console（后台名）。",
+    "logo：静态服务能给出的 URL 路径（文件放 public/ 下，如 public/assets/brand/x.svg → 填 /assets/brand/x.svg）；不配 = 用品牌名渲染文字字标。",
+    "logoLight：浅底场合（白色顶栏）用的变体；不配 = 回落 logo。logo 是为深底画的（浅色字）就必须配它，否则顶栏药丸设为 transparent 后 logo 会隐形。",
+    "顶栏品牌区那块深色药丸底也归 colors 管：--brand-chip（底色，transparent = 与栏底一色）、--brand-chip-sub（药丸旁小字色）、--brand-chip-ink（文字字标色）。不配 = 原样的 navy 药丸 + 金字。登录页 hero 恒为深底，不受这三个变量影响。",
+    "favicon：同 logo 的 URL 路径写法（svg/png/ico 都行）；不配 = 内置中性几何 favicon。**用纯记号的方形资产**——横版带文字的 lockup 缩到页签 16px 文字会糊成一团。",
+    "colors：CSS 变量覆盖表，键必须形如 --xxx（^--[a-z][a-z0-9-]*$），值只收 #hex、rgb()/hsl()、颜色名；",
+    "带 ; { } url( 之类的值会被服务端直接丢弃（防 CSS 注入），别指望它们生效。",
+    "可覆盖哪些变量见 web/src/app.css 的 :root（--brand/--brand-hover/--brand-active/--brand-050/--brand-100/--gold/--accent/--navy/--surface/--line/--line-2…）。",
+    "Semi 组件色（--semi-color-primary 等）已由上面这些基础令牌派生：配置只需给基础令牌，不用碰 --semi-*。",
+    "解析结果（默认值合并 + colors 消毒后）由 GET /api/env 和 GET /api/me 一起下发，两处永远一致。",
+    "── Unfolding Lab 品牌（本产品默认，已写在上面的 brand 段；以下为同一份记录，便于对照）──",
+    "{ \"name\": \"Unfolding Lab\", \"name_zh\": \"其间\",",
+    "  \"footer\": \"Unfolding Lab · unfolding-lab.com\", \"footer_zh\": \"其间 Unfolding Lab · unfolding-lab.com\",",
+    "  \"logo\": \"/assets/brand/unfolding-lab-logo.svg\",",
+    "  \"logoLight\": \"/assets/brand/unfolding-lab-logo-light.svg\",",
+    "  \"favicon\": \"/assets/brand/unfolding-lab-mark.svg\",",
+    "  \"colors\": { \"--brand\": \"#23304a\", \"--brand-hover\": \"#33466b\", \"--brand-active\": \"#172236\",",
+    "               \"--brand-050\": \"#eef1f7\", \"--brand-100\": \"#dbe2ee\",",
+    "               \"--gold\": \"#eab048\", \"--accent\": \"#eab048\", \"--navy\": \"#1b2438\",",
+    "               \"--surface\": \"#f2f4f8\", \"--line\": \"#e3e8f1\", \"--line-2\": \"#eef1f6\",",
+    "               \"--brand-chip\": \"transparent\", \"--brand-chip-sub\": \"#23304a\", \"--brand-chip-ink\": \"#23304a\" } }",
+    "（语义色 success/warning/danger 与墨水色阶 --ink* 不建议覆盖——正文可读性别拿来冒险。官网另有 --gold-ink:#a97a1c 深金字色，需要更深的金色时用它替换 --gold/--accent。）",
+    "── 登录页法务链接（可选，**配了才显示**）──",
+    "在 brand 里加 legal：{ \"legal\": { \"privacyUrl\": \"https://example.com/privacy\", \"termsUrl\": \"/legal/terms.html\" } }",
+    "配了哪个就在登录页底部显示哪个（中文「隐私政策 / 服务条款」、英文 Privacy Policy / Terms of Service，文字随界面语言切换，新窗口打开）；",
+    "不配、或两个 URL 都不合法 = 登录页与不配时完全一样，/api/env 下发的 brand 里也没有 legal 这个键。",
+    "URL 只收 http:// / https:// 绝对地址，或以单个 / 开头的站内路径（文件放 public/ 下，如 public/legal/terms.html → 填 /legal/terms.html）；",
+    "javascript:、data:、// 开头、含空白/引号/尖括号/反斜杠、超过 512 字符的一律丢弃（只丢那一个，另一个照常生效）。",
+    "品牌设置页暂无 legal 的编辑入口，只能在这里配；在品牌设置页点保存会原样保留已配的 legal。",
+    "另：环境变量 LMS_CONFIG_PATH 可指定 config.json 的完整路径（测试/多租户用）；不设 = 程序目录下的 config.json。"
+  ],
+
+  "publicUrl": "https://tms.unfolding-lab.example",
+  "_publicUrl": [
+    "对外访问地址，用来拼邮件里的链接。",
+    "不填也能工作：服务端会按浏览器实际访问的 Host 推导地址。",
+    "反向代理后面记得让 Nginx/IIS 传 X-Forwarded-Proto 与 X-Forwarded-Host。"
+  ],
+
+  "ai": {
+    "provider": {
+      "id": "internal-gateway",
+      "protocol": "openai-chat",
+      "baseUrl": "https://ai-gateway.internal.example/v1",
+      "apiKeyEnv": "LMS_AI_API_KEY",
+      "auth": "bearer",
+      "headers": {},
+      "proxy": "",
+      "capabilities": { "structuredOutput": "json_schema", "thinking": false, "effort": false, "sampling": false }
+    },
+    "models": { "default": "claude-sonnet-5", "portrait": "claude-opus-5-5" },
+    "features": { "assistant": true, "questionGen": true, "grading": true, "portrait": false },
+    "limits": { "concurrency": 4, "gradingConcurrency": 8 },
+    "budget": { "monthlyTokens": 50000000, "alertAtPercent": 80 },
+    "audit": { "retentionDays": { "assistant": 180, "questionGen": 180, "test": 180, "grading": null, "portrait": null } },
+    "portraitRetentionMonthsAfterExit": 12,
+    "demo": false
+  },
+  "_ai": [
+    "AI 辅助（HANDOVER-IT §10 有完整说明、字段表与验证步骤）。只有 modules 里写 \"ai\": true 才生效；上面的 provider 是公司内部 OpenAI 兼容网关的样例，照实际地址改。",
+    "protocol：openai-chat（baseUrl 要带 /v1）/ anthropic-messages（baseUrl 不带 /v1）/ gemini。网关路由前缀不标准时用 provider.path 覆盖。",
+    "密钥推荐放在服务的环境变量 LMS_AI_API_KEY（apiKeyEnv），不要写进文件；也可以写 provider.apiKey（本文件需收紧权限）。",
+    "features：人才画像（portrait）默认关闭，由负责人决定何时开启。demo 只有写 true 才开启（销售演示用）：未接入或出错不会自动进入演示，简答题转 HR 评分。",
+    "兼容：没有 ai.provider 时，旧字段 anthropicApiKey / geminiApiKey / aiModel 与环境变量 ANTHROPIC_API_KEY / GEMINI_API_KEY 仍然有效（默认模型 claude-sonnet-5）；写了 ai.provider 后它们被忽略。"
+  ],
+
+  "email": {
+    "provider": "resend",
+    "apiKey": "",
+    "from": "Unfolding Lab <noreply@unfolding-lab.example>"
+  },
+  "_email": [
+    "不配这一段的话，所有通知只在站内出现（不会发邮件），系统其余功能不受影响。",
+    "目前只接了 resend；sendgrid / mailgun / SMTP 的接入点在 notify.js 的 sendEmail 里。",
+    "provider / apiKey / from **三个都填齐**才算配好邮件：这也是「自助找回密码」的开关 ——",
+    "配齐了 GET /api/env 才会报 passwordResetEnabled:true，登录页才出现「忘记密码」的自助入口；",
+    "少填任何一个（比如 apiKey 留空）就视为没配，登录页只提示联系 HR 管理员，",
+    "服务端也不会生成任何重置令牌 —— 免得系统答应「已发送重置链接」而用户永远收不到。",
+    "重置链接里的域名取 publicUrl（没配就按请求的 Host 推导），所以正式部署建议把 publicUrl 填上。"
+  ]
+}

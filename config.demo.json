@@ -1,0 +1,38 @@
+{
+  "_README": [
+    "演示专用配置（start-demo.bat 用 LMS_CONFIG_PATH 指向本文件）。不含任何密钥；production 为 false，所以可以生成演示库、http 下能登录。",
+    "正式环境不要用本文件：照 config.json.example 建 config.json（production: true）。"
+  ],
+  "production": false,
+  "modules": {
+    "learning": true,
+    "performance": true,
+    "talent": true,
+    "ai": false
+  },
+  "brand": {
+    "name": "Unfolding Lab",
+    "name_zh": "其间",
+    "footer": "Unfolding Lab · unfolding-lab.com",
+    "footer_zh": "其间 Unfolding Lab · unfolding-lab.com",
+    "logo": "/assets/brand/unfolding-lab-logo.svg",
+    "logoLight": "/assets/brand/unfolding-lab-logo-light.svg",
+    "favicon": "/assets/brand/unfolding-lab-mark.svg",
+    "colors": {
+      "--brand": "#23304a",
+      "--brand-hover": "#33466b",
+      "--brand-active": "#172236",
+      "--brand-050": "#eef1f7",
+      "--brand-100": "#dbe2ee",
+      "--gold": "#eab048",
+      "--accent": "#eab048",
+      "--navy": "#1b2438",
+      "--surface": "#f2f4f8",
+      "--line": "#e3e8f1",
+      "--line-2": "#eef1f6",
+      "--brand-chip": "transparent",
+      "--brand-chip-sub": "#23304a",
+      "--brand-chip-ink": "#23304a"
+    }
+  }
+}

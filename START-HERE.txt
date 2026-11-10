@@ -1,0 +1,30 @@
+其间 Unfolding Lab 人才管理系统（TMS）交接包
+
+（这份说明的文件名用英文，是因为压缩包里的中文文件名在某些解压工具下会乱码。）
+
+先看演示：双击 start-demo.bat（第一次运行会自动生成 100 名虚构员工的演示数据，约 30 秒）
+  浏览器打开 http://localhost:8790
+  全功能测试账号 UL-TEST / Demo1234：前台全部功能都有数据，同时是后台超级管理员（「进入后台」）
+  另有：管理员 ADMIN / unfolding888；员工工号 UL-1001～UL-1100，密码 Demo1234
+  主角三人：UL-1032 绩优、UL-1053 新人、UL-1065 待改进
+
+正式使用：双击 start-tms.bat（空库，只有 ADMIN），浏览器打开 http://localhost:8780
+  正式环境请先照 config.json.example 建 config.json（production: true，首次启动会随机生成 ADMIN 密码并打印在窗口里）。
+
+文档在 docs/ 目录（先读 HANDOVER-OVERVIEW.md）：
+  HANDOVER-OVERVIEW.md 交接总览：这个版本是什么、包里有什么、怎么开始
+  GO-LIVE-CHECKLIST.md 上线清单：部署、配置、导入人员与课程、验收
+  HANDOVER-IT.md      给 IT：部署、配置、备份恢复、升级回滚、安全、接入 AI
+  HANDOVER-SSC.md     给 HR 运营：按日常工作组织的操作说明
+  HANDOVER-STATUS.md  版本说明：本版本相对来源版本的改动
+  EMPLOYEE-QUICKSTART.md  员工快速上手（中英）
+
+包里**没有**数据库和 config.json：
+  · 数据库：首次启动自建；演示库由 start-demo.bat 生成在 data/demo-unfolding.db。
+  · config.json 含密钥（AI key、邮件密码），请照 config.json.example 自己建。
+
+两个自检工具：test.bat（203 个测试文件；分两步先后跑，计时用例单独一步）、smoke.bat（63 条用例逐页体检，中英各跑一遍）。
+
+服务器建议安装两个外部组件（不随包，见 HANDOVER-IT.md 2.6 / 2.7）：
+  · LibreOffice —— PPT / Word / Excel 课件转 PDF；没装时这三类上传被拒。
+  · ffmpeg      —— PPT 内嵌视频转网页可播放的 MP4；没装时课件照常上传，视频等转码。

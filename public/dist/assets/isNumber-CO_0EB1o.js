@@ -1,0 +1,1 @@
+import{a9 as b}from"./index-CdFCuvBo.js";import{H as m,J as o}from"./index-DewmoQrh.js";var e,s;function n(){if(s)return e;s=1;var t=m(),u=o(),a="[object Number]";function i(r){return typeof r=="number"||u(r)&&t(r)==a}return e=i,e}var f=n();const p=b(f);export{p as _,n as r};

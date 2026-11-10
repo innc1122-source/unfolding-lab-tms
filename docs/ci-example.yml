@@ -1,0 +1,21 @@
+name: Build and regression checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm --prefix web ci --ignore-scripts
+      - run: npm --prefix web audit
+      - run: npm run build:web
+      - name: Authentication, access control, configuration and branding checks
+        run: node --test --test-concurrency=2 test/auth.test.js test/security.test.js test/config-bom.test.js test/brand.test.js test/brand-legal.test.js test/brand-settings.test.js test/modules-config.test.js

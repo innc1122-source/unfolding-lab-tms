@@ -1,0 +1,1 @@
+import{r}from"./index-CdFCuvBo.js";const e=[10,20,50,100,500,1e3],c=20,o=50,u=100;function E(a){const t=r.useRef({data:void 0,n:0});return t.current.data!==a&&(t.current={data:a,n:t.current.n+1}),t.current.n}const i=(a,t,n)=>Math.min(Math.max(1,a||1),Math.max(1,Math.ceil((t||0)/(n||1))));export{c as D,e as P,o as a,u as b,i as c,E as u};

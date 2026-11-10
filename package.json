@@ -1,0 +1,19 @@
+{
+  "name": "unfolding-lab-tms",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node scripts/run-tests.js",
+    "build:web": "npm --prefix web run build"
+  },
+  "license": "Apache-2.0",
+  "description": "Bilingual talent and learning management system for HR and L&D teams",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/innc1122-source/unfolding-lab-tms.git"
+  }
+}

@@ -1,0 +1,16 @@
+.git
+data
+runtime
+node_modules
+web/node_modules
+test
+*.bat
+*.db
+config.json
+.env
+.env.*
+logs
+backups
+public/attachments
+*.db-wal
+*.db-shm

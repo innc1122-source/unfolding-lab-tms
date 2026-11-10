@@ -1,0 +1,18 @@
+FROM node:24-bookworm-slim
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libreoffice ffmpeg fonts-noto-cjk \
+ && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --chown=node:node . .
+RUN mkdir -p /app/data /app/public/attachments \
+ && chown -R node:node /app/data /app/public/attachments
+ENV NODE_ENV=production \
+    TZ=Asia/Manila \
+    PORT=8780 \
+    LMS_HOST=0.0.0.0 \
+    LMS_PROD=1 \
+    LMS_DB_PATH=/app/data/lms.db \
+    LMS_ATTACH_DIR=/app/data/attachments
+USER node
+EXPOSE 8780
+CMD ["node", "server.js"]
