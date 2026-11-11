@@ -4,13 +4,13 @@
 每条命令都是在这套代码上实际跑过的；路径全部相对项目根目录
 解压后的程序目录（下文写作 `<根目录>`）。
 
-> **本篇为其间 Unfolding Lab 版（2026-10-12）。** 已去掉 Lark 接入与行为实践（3+3）模块；TMS 迁移到 **99**（下一个可用 100）。版本改动见 `docs/HANDOVER-STATUS.md`。
+> **本篇为其间 Unfolding Lab 版（2026-10-12）。** 已去掉 Lark 接入与行为实践（3+3）模块；TMS 迁移到 **99**（下一个可用 100）。版本改动见 `docs/RELEASE-CHECKS.md`。
 
 配套文档：
 - `docs/HANDOVER-OVERVIEW.md` — 本次交接总览：包里有什么、10/01 以来的变化、上线当天要做的事（先读）
 - `README.md` — 功能说明与 HR 侧操作（面向使用者）
 - `docs/HANDOVER-SSC.md` — 给 SSC（HR 运营）的业务使用篇
-- `docs/BASELINE.md` — API、数据表与状态口径的基线记录（改代码前读）
+- `docs/RELEASE-CHECKS.md` — API、数据表与状态口径的基线记录（改代码前读）
 - `deploy/`（**不在这个交接包里**）— 源码仓库里另有一套 Linux 云部署脚本
   （systemd + Caddy + 每日备份，`install.sh` / `cloud-setup.sh` / `README-DEPLOY.md`）。
   没有随包交付，原因有两个：它写于旧 LMS 时期（端口 8765、服务名 `unfolding-lms`、
@@ -748,7 +748,7 @@ runtime\node.exe -e "const{DatabaseSync}=require('node:sqlite');const d=new Data
 - 启动日志里多出 `Pre-migration backup: …` 与 `[migration 94] DEMO-ADMIN deactivated (CX-048)` 属正常。
   启动完用上面的查询确认最高版本是 **99**，并确认 `DEMO-ADMIN` 为停用状态。
 - 任何一条失败，进程起不来，库仍是那一批迁移之前的状态：别反复重启，按 6.4 换回旧代码对外服务，把日志原文交给开发。
-- 每一条更早迁移的细节见 `docs/HANDOVER-STATUS.md` 对应批次（按版本号搜索）。
+- 每一条更早迁移的细节见 `docs/RELEASE-CHECKS.md` 对应批次（按版本号搜索）。
 
 ### 6.4 回滚
 
@@ -793,7 +793,7 @@ runtime\node.exe -e "const{DatabaseSync}=require('node:sqlite');const d=new Data
 
 分步跑是刻意的：TMS 测试会并行起很多服务进程；模块测试里的 4,000 人规模冒烟带计时上限，和其它测试文件并行跑时会因本机负载
 超时（2026-09-29 负责人决定单独运行），所以放在最后一步，运行时没有别的测试进程。前一步失败也会接着跑后面各步；最后一行汇总
-三步的退出码。当前数字见 `docs/HANDOVER-STATUS.md` 第 1 节最新一节。
+三步的退出码。当前数字见 `docs/RELEASE-CHECKS.md` 第 1 节最新一节。
 `npm test`（`scripts/run-tests.js`）与 `test.bat` 是同一个脚本，供装了 Node 的机器使用。
 
 - **跑在系统临时目录的一次性数据库上**（通过 `LMS_DB_PATH`），**不打开、不修改 `lms.db` 与 `config.json`**。

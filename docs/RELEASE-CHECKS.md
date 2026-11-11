@@ -21,3 +21,5 @@ Checked 2026-11-10, using Node.js 24.21.0.
 ## Not claimed
 
 The full historical regression suite was not run for this release. A separate security assessment, load test and production Docker build were not performed. Docker was unavailable in the release preparation environment; validate `Dockerfile.production` on a Docker-capable host before production use. LibreOffice/media conversion flows were not verified in this environment. This release does not establish a support SLA, hosted subscription, multi-tenant SaaS capability or production certification.
+
+The optional CI workflow template is `docs/ci-example.yml`; no automated workflow is enabled in the initial public repository. It can be installed later with an account permitted to edit GitHub Actions workflows.

@@ -16,7 +16,7 @@
   GO-LIVE-CHECKLIST.md 上线清单：部署、配置、导入人员与课程、验收
   HANDOVER-IT.md      给 IT：部署、配置、备份恢复、升级回滚、安全、接入 AI
   HANDOVER-SSC.md     给 HR 运营：按日常工作组织的操作说明
-  HANDOVER-STATUS.md  版本说明：本版本相对来源版本的改动
+  RELEASE-CHECKS.md  版本说明：本版本相对来源版本的改动
   EMPLOYEE-QUICKSTART.md  员工快速上手（中英）
 
 包里**没有**数据库和 config.json：
